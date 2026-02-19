@@ -21,8 +21,8 @@
       --glass2: rgba(255,255,255,.36);
       --shadow: 0 10px 30px rgba(0,0,0,.08);
       --radius: 18px;
-      --ls: -0.05em;     /* “-100” вайб */
-      --ls-soft: -0.05em;/* “-50” для Долями */
+      --ls: -0.05em;     /* общий вайб */
+      --ls-soft: -0.05em;/* для Долями */
     }
 
     *{ box-sizing:border-box; }
@@ -47,7 +47,7 @@
       padding-left: max(16px, env(safe-area-inset-left));
       padding-right: max(16px, env(safe-area-inset-right));
     }
-    .top-safe{ padding-top: max(10px, env(safe-area-inset-top)); }
+    .top-safe{ padding-top: max(6px, env(safe-area-inset-top)); } /* меньше пустоты сверху */
     .bottom-safe{ padding-bottom: max(16px, env(safe-area-inset-bottom)); }
 
     /* Loading */
@@ -108,12 +108,13 @@
       flex-direction:column;
     }
 
-    .header-space{ height: 76px; } /* чтобы якоря и observer работали ровно */
+    /* теперь реальная высота шапки (меньше пустоты сверху) */
+    .header-space{ height: 64px; } /* было 76 */
 
     .topbar{
       position:relative;
-      padding-top: 14px;
-      padding-bottom: 10px;
+      padding-top: 6px;   /* было 14 */
+      padding-bottom: 6px;/* было 10 */
     }
 
     .topbar-inner{
@@ -124,7 +125,6 @@
 
     .topbar-left, .topbar-right{
       display:flex;
-      gap:22px;
       align-items:center;
       font-weight:400;
       font-size:12px;
@@ -132,22 +132,10 @@
       letter-spacing: var(--ls);
       white-space:nowrap;
     }
-    .topbar-left{ justify-content:flex-start; }
-    .topbar-right{ justify-content:flex-end; }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      width:62px; height:62px;
-      margin:0 auto;
-      cursor:pointer;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    /* “ARCHIVE” sphere-ish SVG vibe */
-    .brand svg{ width:62px; height:62px; display:block; }
+    /* ровнее отступы вокруг лого */
+    .topbar-left{ justify-content:flex-start; gap:18px; }
+    .topbar-right{ justify-content:flex-end; gap:18px; }
 
     .nav-item{
       opacity: .92;
@@ -156,11 +144,29 @@
     }
     .nav-item:active{ opacity: .65; transform: scale(.98); }
 
+    /* ТВОЁ ЛОГО */
+    .brand{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:56px; height:56px; /* под png */
+      margin:0 auto;
+      cursor:pointer;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .brand img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+    }
+
     /* Floating glass header */
     .floatbar{
       position:fixed;
       left:0; right:0;
-      top: calc(env(safe-area-inset-top) + 8px);
+      top: calc(env(safe-area-inset-top) + 6px);
       z-index: 2000;
       display:flex;
       justify-content:center;
@@ -194,11 +200,20 @@
       font-size:12px;
       gap:14px;
     }
+
     .floatbrand{
-      width:38px; height:38px;
-      display:flex; align-items:center; justify-content:center;
+      width:34px; height:34px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      -webkit-tap-highlight-color: transparent;
     }
-    .floatbrand svg{ width:38px; height:38px; }
+    .floatbrand img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+    }
 
     /* Categories (STATIC) */
     .categories{
@@ -241,7 +256,7 @@
     .grid{
       display:grid;
       grid-template-columns: 1fr 1fr;
-      gap: 26px 18px;
+      gap: 30px 18px; /* чуть больше по вертикали, чтобы был скролл красивее */
       align-items:start;
       padding-top: 4px;
       transition: opacity .18s ease, transform .18s ease;
@@ -256,23 +271,33 @@
       user-select:none;
     }
 
+    /* ТЕПЕРЬ БЕЗ ФОНА У ТОВАРОВ */
     .img{
-      width: 100%;
+      width:100%;
       aspect-ratio: 1/1;
-      border-radius: 22px;
       display:flex;
       align-items:center;
       justify-content:center;
-      overflow:hidden;
-      background: radial-gradient(120% 120% at 50% 30%, #ffffff 0%, #f2f2f2 55%, #e9e9e9 100%);
-      border: 1px solid rgba(0,0,0,.06);
+      overflow:visible;
+      background: transparent;    /* было градиент/фон */
+      border: none;               /* было 1px */
+      border-radius: 0;           /* чтобы не было “плашки” */
     }
 
-    /* Inline “jacket” SVG look */
-    .img svg{ width: 92%; height: 92%; opacity: .92; }
+    /* Фото товара (sweater.png) */
+    .product-photo{
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display:block;
+      -webkit-user-drag: none;
+      user-select:none;
+      pointer-events:none; /* пока не кликабельные */
+      transform: translateZ(0);
+    }
 
     .name{
-      margin-top: 16px;
+      margin-top: 14px;
       font-weight:650;
       font-size:14px;
       text-transform: uppercase;
@@ -306,6 +331,7 @@
       letter-spacing: calc(var(--ls) + 0.03em);
     }
 
+    /* ДОЛЯМИ — ИКОНКА С PNG */
     .dolyami{
       margin-top: 10px;
       display:inline-flex;
@@ -318,25 +344,14 @@
       font-weight:700;
       font-size:12px;
       letter-spacing: var(--ls-soft);
-      text-transform: uppercase;
+      text-transform: none;
     }
-    .dolyami .dot{
-      width:18px; height:18px;
-      border-radius: 6px;
-      background:#111;
-      display:grid;
-      place-items:center;
-    }
-    .dolyami .dot i{
-      width:10px; height:10px;
+    .dolyami-icon{
+      width:18px;
+      height:18px;
       display:block;
-      background: repeating-linear-gradient(
-        90deg,
-        #fff, #fff 2px,
-        transparent 2px, transparent 4px
-      );
-      border-radius:3px;
-      opacity:.95;
+      object-fit:contain;
+      flex:0 0 auto;
     }
 
     /* Footer */
@@ -373,12 +388,12 @@
     }
     .footer a:active{ opacity:.65; transform: scale(.99); }
 
-    /* Small devices polish */
+    /* Small devices polish (оставил, но поправил значения под твои текущие размеры) */
     @media (max-width: 360px){
-      .topbar-left,.topbar-right{ gap: 12px; font-size: 13px; }
-      .cat{ font-size: 16px; }
-      .grid{ gap: 22px 14px; }
-      .name{ font-size: 15px; }
+      .topbar-left,.topbar-right{ gap: 14px; font-size: 11px; }
+      .cat{ font-size: 10px; }
+      .grid{ gap: 26px 14px; }
+      .name{ font-size: 13px; }
     }
   </style>
 </head>
@@ -402,21 +417,7 @@
         </div>
 
         <button class="floatbrand" id="floatLogoBtn" aria-label="FURUYUME — наверх">
-          <svg viewBox="0 0 100 100" fill="none" aria-hidden="true">
-            <defs>
-              <clipPath id="c2"><circle cx="50" cy="50" r="46"/></clipPath>
-            </defs>
-            <circle cx="50" cy="50" r="46" fill="#111"/>
-            <g clip-path="url(#c2)" opacity=".98">
-              <path d="M10 25 C30 10, 70 10, 90 25" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-              <path d="M10 40 C30 25, 70 25, 90 40" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-              <path d="M10 55 C30 40, 70 40, 90 55" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-              <path d="M10 70 C30 55, 70 55, 90 70" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-              <text x="50" y="57" text-anchor="middle" font-family="Inter, Arial" font-size="16" font-weight="800" fill="#fff" style="letter-spacing:-0.08em;">
-                ARCHIVE
-              </text>
-            </g>
-          </svg>
+          <img src="logo.png" alt="FURUYUME">
         </button>
 
         <div class="topbar-right">
@@ -439,22 +440,7 @@
         </div>
 
         <button class="brand" id="logoBtn" aria-label="FURUYUME — наверх">
-          <svg viewBox="0 0 100 100" fill="none" aria-hidden="true">
-            <defs>
-              <clipPath id="c1"><circle cx="50" cy="50" r="46"/></clipPath>
-            </defs>
-            <circle cx="50" cy="50" r="46" fill="#111"/>
-            <g clip-path="url(#c1)" opacity=".98">
-              <path d="M10 22 C30 8, 70 8, 90 22" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-              <path d="M10 38 C30 24, 70 24, 90 38" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-              <path d="M10 54 C30 40, 70 40, 90 54" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-              <path d="M10 70 C30 56, 70 56, 90 70" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-              <path d="M10 86 C30 72, 70 72, 90 86" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
-              <text x="50" y="58" text-anchor="middle" font-family="Inter, Arial" font-size="18" font-weight="800" fill="#fff" style="letter-spacing:-0.08em;">
-                ARCHIVE
-              </text>
-            </g>
-          </svg>
+          <img src="logo.png" alt="FURUYUME">
         </button>
 
         <div class="topbar-right">
@@ -496,7 +482,7 @@
   </div>
 
   <script>
-    // ====== Data (пока 2 товара, как на скрине) ======
+    // ====== Data (теперь 6 товаров для скролла) ======
     const CATEGORIES = [
       { id: "all", label: "Все" },
       { id: "olymp", label: "Олимпийки" },
@@ -508,25 +494,69 @@
       { id: "shoes", label: "Обувь" }
     ];
 
-    // Один “архивный” товар, но дублируем, чтобы визуально было как в примере.
+    // IMPORTANT:
+    // - sweater.png (прозрачный) лежит рядом с index.html
+    // - dolyami.png (прозрачный) лежит рядом с index.html
     const PRODUCTS = [
       {
         id: "p1",
+        img: "sweater.png",
         name: "REFLECTIVE SWEATER (BLACK)",
         badge: "РАСПРОДАЖА",
         price: "7 600 RUB",
         oldPrice: "11 600 RUB",
         dolyami: "Долями по 1 900 ₽",
-        categories: ["olymp","bombers","hoodies","longsleeves","tees","pants","shoes"]
+        categories: ["olymp"]
       },
       {
         id: "p2",
-        name: "REFLECTIVE SWEATER (BLACK)",
+        img: "sweater.png",
+        name: "ARCHIVE TRACK JACKET",
+        badge: "LIMITED",
+        price: "12 900 RUB",
+        oldPrice: "15 900 RUB",
+        dolyami: "Долями по 3 225 ₽",
+        categories: ["olymp"]
+      },
+      {
+        id: "p3",
+        img: "sweater.png",
+        name: "BOMBER (VINTAGE)",
         badge: "РАСПРОДАЖА",
-        price: "7 600 RUB",
-        oldPrice: "11 600 RUB",
-        dolyami: "Долями по 1 900 ₽",
-        categories: ["olymp","bombers","hoodies","longsleeves","tees","pants","shoes"]
+        price: "9 900 RUB",
+        oldPrice: "13 900 RUB",
+        dolyami: "Долями по 2 475 ₽",
+        categories: ["bombers"]
+      },
+      {
+        id: "p4",
+        img: "sweater.png",
+        name: "HOODIE (ARCHIVE)",
+        badge: "DROP",
+        price: "8 500 RUB",
+        oldPrice: "10 900 RUB",
+        dolyami: "Долями по 2 125 ₽",
+        categories: ["hoodies"]
+      },
+      {
+        id: "p5",
+        img: "sweater.png",
+        name: "LONGSLEEVE (RARE)",
+        badge: "РАСПРОДАЖА",
+        price: "5 400 RUB",
+        oldPrice: "7 900 RUB",
+        dolyami: "Долями по 1 350 ₽",
+        categories: ["longsleeves"]
+      },
+      {
+        id: "p6",
+        img: "sweater.png",
+        name: "PANTS (ARCHIVE)",
+        badge: "NEW",
+        price: "6 800 RUB",
+        oldPrice: "8 900 RUB",
+        dolyami: "Долями по 1 700 ₽",
+        categories: ["pants"]
       }
     ];
 
@@ -547,74 +577,6 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    function jacketSVG() {
-      // простая “олимпийка” в SVG, чтобы было похоже по вайбу
-      return `
-        <svg viewBox="0 0 240 240" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0" stop-color="#ffffff"/>
-              <stop offset="1" stop-color="#f0f0f0"/>
-            </linearGradient>
-          </defs>
-
-          <!-- body -->
-          <path d="M70 48
-                   C86 36, 154 36, 170 48
-                   L190 70
-                   C198 78, 202 92, 200 104
-                   L190 185
-                   C188 200, 176 212, 161 212
-                   H79
-                   C64 212, 52 200, 50 185
-                   L40 104
-                   C38 92, 42 78, 50 70
-                   L70 48Z"
-                fill="url(#g1)" stroke="rgba(0,0,0,.10)" stroke-width="3" />
-
-          <!-- zipper -->
-          <path d="M120 46 V212" stroke="rgba(0,0,0,.16)" stroke-width="3" stroke-linecap="round"/>
-
-          <!-- collar -->
-          <path d="M96 46
-                   C106 62, 112 72, 120 78
-                   C128 72, 134 62, 144 46"
-                stroke="rgba(0,0,0,.14)" stroke-width="3" stroke-linecap="round" fill="none"/>
-
-          <!-- left sleeve -->
-          <path d="M70 48 L46 70 C36 80, 30 92, 30 106
-                   L34 170 C35 184, 46 194, 60 194
-                   H72"
-                fill="url(#g1)" stroke="rgba(0,0,0,.10)" stroke-width="3" />
-
-          <!-- right sleeve -->
-          <path d="M170 48 L194 70 C204 80, 210 92, 210 106
-                   L206 170 C205 184, 194 194, 180 194
-                   H168"
-                fill="url(#g1)" stroke="rgba(0,0,0,.10)" stroke-width="3" />
-
-          <!-- stripes -->
-          <path d="M54 82 L76 60" stroke="rgba(120,170,220,.85)" stroke-width="5" stroke-linecap="round"/>
-          <path d="M60 92 L86 66" stroke="rgba(120,170,220,.85)" stroke-width="5" stroke-linecap="round"/>
-          <path d="M66 102 L96 74" stroke="rgba(120,170,220,.85)" stroke-width="5" stroke-linecap="round"/>
-
-          <path d="M186 82 L164 60" stroke="rgba(120,170,220,.85)" stroke-width="5" stroke-linecap="round"/>
-          <path d="M180 92 L154 66" stroke="rgba(120,170,220,.85)" stroke-width="5" stroke-linecap="round"/>
-          <path d="M174 102 L144 74" stroke="rgba(120,170,220,.85)" stroke-width="5" stroke-linecap="round"/>
-
-          <!-- small chest marks -->
-          <path d="M86 102
-                   C86 92, 98 90, 104 98
-                   C98 106, 90 110, 86 102Z"
-                fill="rgba(120,170,220,.35)" stroke="rgba(120,170,220,.75)" stroke-width="2"/>
-          <path d="M152 98
-                   C156 92, 168 92, 170 100
-                   C164 106, 156 108, 152 98Z"
-                fill="rgba(120,170,220,.25)" stroke="rgba(120,170,220,.65)" stroke-width="2"/>
-        </svg>
-      `;
-    }
-
     function renderCategories(activeId) {
       catWrap.innerHTML = CATEGORIES.map(c => {
         const active = c.id === activeId ? "active" : "";
@@ -631,7 +593,9 @@
       const items = filterProducts(catId);
       grid.innerHTML = items.map(p => `
         <article class="card">
-          <div class="img">${jacketSVG()}</div>
+          <div class="img">
+            <img class="product-photo" src="${p.img}" alt="${p.name}">
+          </div>
           <div class="name">${p.name}</div>
           <div class="desc">${p.badge}</div>
           <div class="price-row">
@@ -639,7 +603,7 @@
             <span class="old">${p.oldPrice}</span>
           </div>
           <div class="dolyami" aria-label="${p.dolyami}">
-            <span class="dot" aria-hidden="true"><i></i></span>
+            <img class="dolyami-icon" src="dolyami.png" alt="" aria-hidden="true">
             <span>${p.dolyami}</span>
           </div>
         </article>
@@ -647,7 +611,6 @@
     }
 
     async function switchCategory(nextId) {
-      // плавное обновление
       grid.classList.add("fade-out");
       await sleep(160);
       renderProducts(nextId);
@@ -670,10 +633,8 @@
 
     // ====== Loader ======
     async function hideLoaderSoon() {
-      // hint if too long
       const hintTimer = setTimeout(() => loaderHint.classList.add("show"), 2200);
 
-      // wait for fonts a bit (best-effort)
       try { if (document.fonts && document.fonts.ready) await Promise.race([document.fonts.ready, sleep(700)]); } catch(e){}
       await sleep(420);
 
@@ -701,7 +662,6 @@
         const current = catWrap.querySelector(".cat.active")?.getAttribute("data-cat");
         if (nextId === current) return;
 
-        // active state
         catWrap.querySelectorAll(".cat").forEach(x => x.classList.remove("active"));
         btn.classList.add("active");
 
