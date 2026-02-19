@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <!-- ✅ (2) запрет зума/приближения на мобилках -->
+  <!-- ✅ запрет зума/приближения на мобилках -->
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
   <meta name="theme-color" content="#ffffff" />
   <title>FURUYUME</title>
@@ -109,12 +109,10 @@
       display:flex;
       flex-direction:column;
     }
-
     .header-space{ height: 0px; }
 
     /* =========================
-       ✅ (1) NEW MAIN HEADER LOOK
-       стеклянная плашка как у float, лого слева, кнопки справа
+       MAIN HEADER (glass card)
        ========================= */
     .topbar{
       position:relative;
@@ -180,7 +178,7 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      width:44px; height:44px; /* чуть меньше, чтобы справа текст не давил */
+      width:44px; height:44px;
       cursor:pointer;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
@@ -193,7 +191,7 @@
       display:block;
     }
 
-    /* ✅ (4) место под фотку под шапкой */
+    /* HERO */
     .hero{
       padding-top: 10px;
       padding-bottom: 6px;
@@ -215,8 +213,6 @@
 
     /* =========================
        FLOATING GLASS HEADER
-       ✅ (1) лого слева, кнопки справа
-       ✅ сделать поменьше, чтобы не налезало
        ========================= */
     .floatbar{
       position:fixed;
@@ -238,7 +234,7 @@
       -webkit-backdrop-filter: blur(14px);
       box-shadow: var(--shadow);
       border: 1px solid rgba(0,0,0,.06);
-      padding: 8px 12px; /* меньше */
+      padding: 8px 12px;
       opacity:0;
       transform: translateY(-10px);
       transition: opacity .22s ease, transform .22s ease;
@@ -267,19 +263,19 @@
       display:flex;
       align-items:center;
       justify-content:flex-end;
-      gap: 12px; /* компактнее */
+      gap: 12px;
       flex:1 1 auto;
       min-width:0;
       white-space:nowrap;
       overflow:hidden;
       font-weight:400;
-      font-size:11px; /* меньше */
+      font-size:11px;
       text-transform: uppercase;
       letter-spacing: var(--ls);
     }
 
     .floatbrand{
-      width:30px; height:30px; /* меньше, чтобы текст не налезал */
+      width:30px; height:30px;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -296,13 +292,13 @@
     }
 
     /* =========================
-       SEARCH DRAWER (dropdown under Search button)
+       SEARCH DRAWER (dropdown under active header)
        ========================= */
     .drawer{
       position: fixed;
       left: 0; right: 0;
       z-index: 3500;
-      pointer-events: none; /* включаем только когда open */
+      pointer-events: none;
     }
     .drawer.open{ pointer-events:auto; }
 
@@ -316,9 +312,7 @@
       -webkit-backdrop-filter: blur(16px);
       box-shadow: 0 18px 50px rgba(0,0,0,.12);
       border: 1px solid rgba(0,0,0,.08);
-
       overflow:hidden;
-
       opacity:0;
       transform: translateY(-6px);
       transition: opacity .18s ease, transform .18s ease;
@@ -344,17 +338,17 @@
       color: var(--text);
       letter-spacing: var(--ls);
       font-size: 12px;
-      font-weight: 600;
+      font-weight: 700;
       text-transform: uppercase;
     }
     .drawer-top input::placeholder{
       color: rgba(10,10,10,.45);
-      font-weight: 600;
+      font-weight: 700;
     }
     .drawer-close{
       flex:0 0 auto;
       font-size:12px;
-      font-weight:700;
+      font-weight:800;
       letter-spacing: var(--ls);
       text-transform: uppercase;
       opacity:.75;
@@ -388,6 +382,14 @@
       border-radius: 14px;
       background: rgba(0,0,0,.03);
       border: 1px solid rgba(0,0,0,.05);
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .18s ease, opacity .18s ease, background .18s ease;
+    }
+    .result:active{
+      transform: scale(.99);
+      opacity:.85;
+      background: rgba(0,0,0,.04);
     }
     .result-img{
       width:44px; height:44px;
@@ -411,7 +413,7 @@
     }
     .result-name{
       font-size:11px;
-      font-weight:800;
+      font-weight:900;
       text-transform: uppercase;
       letter-spacing: var(--ls);
       line-height: 1.15;
@@ -423,10 +425,10 @@
     .result-meta{
       margin-top: 6px;
       font-size:10px;
-      font-weight:700;
+      font-weight:800;
       text-transform: uppercase;
       letter-spacing: calc(var(--ls) + 0.02em);
-      opacity:.75;
+      opacity:.72;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -444,14 +446,14 @@
       padding: 8px 2px 0;
       text-align:center;
       font-size:11px;
-      font-weight:700;
+      font-weight:800;
       text-transform: uppercase;
       letter-spacing: calc(var(--ls) + 0.02em);
       opacity:.6;
     }
 
     /* =========================
-       CART MODAL
+       CART MODAL (smooth)
        ========================= */
     .modal{
       position:fixed; inset:0;
@@ -462,8 +464,15 @@
       background: rgba(0,0,0,.18);
       backdrop-filter: blur(6px);
       -webkit-backdrop-filter: blur(6px);
+      opacity:0;
+      transition: opacity .18s ease;
     }
-    .modal.show{ display:flex; }
+    .modal.show{
+      display:flex;
+    }
+    .modal.visible{
+      opacity:1;
+    }
 
     .sheet{
       width: min(520px, 100%);
@@ -473,11 +482,11 @@
       border: 1px solid rgba(0,0,0,.08);
       box-shadow: 0 -18px 60px rgba(0,0,0,.18);
       padding: 14px 14px 18px;
-      transform: translateY(10px);
+      transform: translateY(14px);
       opacity:0;
       transition: transform .18s ease, opacity .18s ease;
     }
-    .modal.show .sheet{
+    .modal.visible .sheet{
       transform: translateY(0);
       opacity:1;
     }
@@ -497,7 +506,7 @@
     }
     .sheet-close{
       font-size:12px;
-      font-weight:800;
+      font-weight:900;
       letter-spacing: var(--ls);
       text-transform: uppercase;
       opacity:.7;
@@ -512,15 +521,145 @@
       transform: scale(.98);
       background: rgba(0,0,0,.04);
     }
+
     .sheet-body{
       padding-top: 12px;
+    }
+
+    .cart-empty{
       font-size:11px;
-      font-weight:700;
+      font-weight:800;
       letter-spacing: calc(var(--ls) + 0.02em);
       text-transform: uppercase;
-      opacity:.7;
+      opacity:.6;
       line-height: 1.35;
+      padding: 6px 2px 10px;
+      text-align:center;
     }
+
+    .cart-list{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      max-height: 46vh;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 12px;
+    }
+
+    .cart-row{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      padding: 10px 10px;
+      border-radius: 16px;
+      background: rgba(0,0,0,.03);
+      border: 1px solid rgba(0,0,0,.05);
+    }
+    .cart-img{
+      width:44px; height:44px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+      overflow:hidden;
+    }
+    .cart-img img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+      pointer-events:none;
+      user-select:none;
+    }
+    .cart-mid{
+      min-width:0;
+      flex:1 1 auto;
+    }
+    .cart-name{
+      font-size:11px;
+      font-weight:900;
+      text-transform: uppercase;
+      letter-spacing: var(--ls);
+      line-height: 1.15;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .cart-meta{
+      margin-top: 6px;
+      font-size:10px;
+      font-weight:800;
+      text-transform: uppercase;
+      letter-spacing: calc(var(--ls) + 0.02em);
+      opacity:.7;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .cart-qty{
+      display:flex;
+      align-items:center;
+      gap: 8px;
+      flex:0 0 auto;
+    }
+    .qty-btn{
+      width:30px; height:30px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(0,0,0,.10);
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      font-size:14px;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .18s ease, opacity .18s ease;
+      user-select:none;
+    }
+    .qty-btn:active{ transform: scale(.98); opacity:.75; }
+    .qty-val{
+      min-width: 20px;
+      text-align:center;
+      font-size:11px;
+      font-weight:900;
+      text-transform: uppercase;
+      letter-spacing: var(--ls);
+      opacity:.9;
+    }
+
+    .cart-sum{
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(0,0,0,.06);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .cart-total{
+      font-size:12px;
+      font-weight:900;
+      text-transform: uppercase;
+      letter-spacing: var(--ls);
+    }
+    .cart-order{
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #111;
+      color:#fff;
+      font-size:12px;
+      font-weight:900;
+      text-transform: uppercase;
+      letter-spacing: calc(var(--ls) + 0.02em);
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .18s ease, opacity .18s ease;
+      white-space:nowrap;
+    }
+    .cart-order:active{ transform: scale(.99); opacity:.85; }
 
     /* Categories (STATIC) */
     .categories{
@@ -588,6 +727,8 @@
       background: transparent;
       border: none;
       border-radius: 0;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .product-photo{
@@ -607,13 +748,14 @@
       font-size:14px;
       text-transform: uppercase;
       letter-spacing: var(--ls);
-
       line-height: 1.1;
       min-height: calc(2 * 1.1em);
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .desc{
@@ -632,12 +774,12 @@
       justify-content:center;
       gap: 8px;
       font-size:14px;
-      font-weight:700;
+      font-weight:800;
       letter-spacing: calc(var(--ls) + 0.02em);
       text-transform: uppercase;
     }
     .old{
-      font-weight:600;
+      font-weight:700;
       color: #8b8b8b;
       text-decoration: line-through;
       font-size: 12px;
@@ -653,7 +795,7 @@
       border-radius: 999px;
       background: rgba(0,0,0,.06);
       color:#111;
-      font-weight:700;
+      font-weight:800;
       font-size:12px;
       letter-spacing: var(--ls-soft);
       text-transform: none;
@@ -710,6 +852,414 @@
     }
     .footer a:active{ opacity:.65; transform: scale(.99); }
 
+    /* =========================
+       PRODUCT VIEW (B)
+       ========================= */
+    .product-view{
+      position:fixed;
+      inset:0;
+      z-index: 3000;
+      background: var(--bg);
+      display:none;
+      overflow:hidden;
+    }
+    .product-view.show{
+      display:block;
+    }
+
+    .product-scroll{
+      position:absolute;
+      inset:0;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: calc(92px + env(safe-area-inset-bottom)); /* место под фикс кнопки */
+    }
+
+    .productbar{
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding-top: 2px;
+      padding-bottom: 6px;
+      background: transparent;
+    }
+    .productbar-card{
+      width: min(520px, 100%);
+      margin: 0 auto;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--glass), var(--glass2));
+      background-color: rgba(255,255,255,.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,.06);
+      padding: 10px 12px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+
+    .backbtn{
+      width:40px; height:40px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(0,0,0,.10);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .18s ease, opacity .18s ease;
+      flex:0 0 auto;
+    }
+    .backbtn:active{ transform: scale(.99); opacity:.82; }
+    .backbtn svg{ width:18px; height:18px; display:block; }
+
+    .productbar-title{
+      min-width:0;
+      flex:1 1 auto;
+      text-align:center;
+      font-size:12px;
+      font-weight:900;
+      text-transform: uppercase;
+      letter-spacing: var(--ls);
+      opacity:.92;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      user-select:none;
+      pointer-events:none;
+    }
+
+    .productbar-spacer{
+      width:40px; height:40px; /* чтобы центр был реально центр */
+      flex:0 0 auto;
+      opacity:0;
+      pointer-events:none;
+    }
+
+    .pwrap{
+      width: min(520px, 100%);
+      margin: 0 auto;
+      padding-top: 6px;
+    }
+
+    .gallery{
+      position:relative;
+      border-radius: 22px;
+      overflow:hidden;
+      border: 1px solid rgba(0,0,0,.06);
+      background: rgba(0,0,0,.02);
+    }
+    .gallery-stage{
+      width:100%;
+      aspect-ratio: 1/1;
+      position:relative;
+      overflow:hidden;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .gallery-stage img{
+      width:100%;
+      height:100%;
+      object-fit: contain;
+      display:block;
+      user-select:none;
+      pointer-events:none;
+    }
+
+    .g-arrow{
+      position:absolute;
+      top:50%;
+      transform: translateY(-50%);
+      width:40px; height:40px;
+      border-radius:999px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(0,0,0,.10);
+      box-shadow: 0 12px 30px rgba(0,0,0,.10);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .18s ease, opacity .18s ease;
+      user-select:none;
+    }
+    .g-arrow:active{ transform: translateY(-50%) scale(.99); opacity:.82; }
+    .g-left{ left: 10px; }
+    .g-right{ right: 10px; }
+    .g-arrow svg{ width:18px; height:18px; display:block; }
+
+    .thumbs{
+      display:flex;
+      justify-content:center;
+      gap: 8px;
+      padding: 10px 10px 0;
+    }
+    .thumb{
+      width:44px; height:44px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,.10);
+      background: rgba(0,0,0,.02);
+      overflow:hidden;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      opacity:.7;
+      transition: opacity .18s ease, transform .18s ease;
+      user-select:none;
+    }
+    .thumb.active{
+      opacity:1;
+    }
+    .thumb:active{ transform: scale(.99); }
+    .thumb img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+      pointer-events:none;
+      user-select:none;
+    }
+
+    .pinfo{
+      padding: 16px 4px 0;
+      text-align:center;
+    }
+    .ptitle{
+      font-size:16px;
+      font-weight:900;
+      text-transform: uppercase;
+      letter-spacing: var(--ls);
+      line-height: 1.15;
+    }
+    .psku{
+      margin-top: 10px;
+      font-size:11px;
+      font-weight:800;
+      text-transform: uppercase;
+      letter-spacing: calc(var(--ls) + 0.02em);
+      opacity:.65;
+    }
+    .pprice{
+      margin-top: 14px;
+      display:flex;
+      align-items:baseline;
+      justify-content:center;
+      gap: 10px;
+      font-size:16px;
+      font-weight:900;
+      text-transform: uppercase;
+      letter-spacing: calc(var(--ls) + 0.02em);
+    }
+    .pprice .pold{
+      font-size:13px;
+      font-weight:800;
+      color:#8b8b8b;
+      text-decoration: line-through;
+      letter-spacing: calc(var(--ls) + 0.03em);
+    }
+
+    .psizes{
+      margin-top: 14px;
+      display:flex;
+      justify-content:center;
+      gap: 10px;
+      flex-wrap:wrap;
+    }
+    .sizebtn{
+      min-width: 46px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(0,0,0,.10);
+      background: rgba(0,0,0,.02);
+      font-size:12px;
+      font-weight:900;
+      text-transform: uppercase;
+      letter-spacing: var(--ls);
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .18s ease, opacity .18s ease, background .18s ease;
+      user-select:none;
+    }
+    .sizebtn:active{ transform: scale(.99); opacity:.85; }
+    .sizebtn.active{
+      background: rgba(0,0,0,.08);
+      border-color: rgba(0,0,0,.16);
+    }
+
+    .pdesc{
+      margin-top: 18px;
+      text-align:left;
+      padding: 0 6px;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing: calc(var(--ls) + 0.02em);
+      line-height: 1.55;
+      opacity:.86;
+      text-transform:none;
+    }
+    .pdesc h3{
+      margin: 0 0 10px;
+      font-size:12px;
+      font-weight:900;
+      text-transform: uppercase;
+      letter-spacing: var(--ls);
+      opacity:.92;
+    }
+    .pdesc ul{
+      margin:0;
+      padding-left: 18px;
+    }
+    .pdesc li{
+      margin: 8px 0;
+    }
+
+    .related{
+      margin-top: 22px;
+      padding: 0 6px;
+    }
+    .related-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .related-title{
+      font-size:12px;
+      font-weight:900;
+      text-transform: uppercase;
+      letter-spacing: var(--ls);
+      opacity:.92;
+    }
+    .rel-arrows{
+      display:flex;
+      gap: 8px;
+    }
+    .rel-btn{
+      width:36px; height:36px;
+      border-radius:999px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(0,0,0,.10);
+      box-shadow: 0 12px 30px rgba(0,0,0,.08);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .18s ease, opacity .18s ease;
+    }
+    .rel-btn:active{ transform: scale(.99); opacity:.82; }
+    .rel-btn svg{ width:18px; height:18px; display:block; }
+
+    .rel-track{
+      display:flex;
+      gap: 12px;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+      scroll-snap-type: x mandatory;
+      padding: 2px 2px 10px;
+    }
+    .rel-card{
+      flex: 0 0 140px;
+      scroll-snap-align: start;
+      border-radius: 18px;
+      border: 1px solid rgba(0,0,0,.06);
+      background: rgba(0,0,0,.02);
+      padding: 12px 10px;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .18s ease, opacity .18s ease;
+    }
+    .rel-card:active{ transform: scale(.99); opacity:.85; }
+    .rel-img{
+      width:100%;
+      aspect-ratio: 1/1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      background: transparent;
+      margin-bottom: 10px;
+    }
+    .rel-img img{
+      width:100%;
+      height:100%;
+      object-fit: contain;
+      display:block;
+      pointer-events:none;
+      user-select:none;
+    }
+    .rel-name{
+      font-size:10px;
+      font-weight:900;
+      text-transform: uppercase;
+      letter-spacing: var(--ls);
+      line-height: 1.15;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow:hidden;
+      opacity:.92;
+      min-height: calc(2 * 1.15em);
+    }
+    .rel-price{
+      margin-top: 8px;
+      font-size:10px;
+      font-weight:900;
+      text-transform: uppercase;
+      letter-spacing: calc(var(--ls) + 0.02em);
+      opacity:.78;
+    }
+
+    .product-actions{
+      position:fixed;
+      left:0; right:0;
+      bottom:0;
+      z-index: 12;
+      background: linear-gradient(180deg, rgba(255,255,255,0), rgba(255,255,255,.92) 32%, rgba(255,255,255,.92));
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(0,0,0,.06);
+      padding-top: 10px;
+      padding-bottom: calc(12px + env(safe-area-inset-bottom));
+    }
+    .actions-inner{
+      width: min(520px, 100%);
+      margin: 0 auto;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .act-btn{
+      flex:1 1 50%;
+      padding: 14px 14px;
+      border-radius: 16px;
+      font-size:12px;
+      font-weight:900;
+      text-transform: uppercase;
+      letter-spacing: calc(var(--ls) + 0.02em);
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: transform .18s ease, opacity .18s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .act-btn:active{ transform: scale(.99); opacity:.85; }
+    .btn-primary{
+      background:#111;
+      color:#fff;
+    }
+    .btn-ghost{
+      background: rgba(0,0,0,.06);
+      color:#111;
+      border: 1px solid rgba(0,0,0,.08);
+    }
+
+    /* when product open — hide floating header and drawer anchor conflicts */
+    body.product-open .floatbar{ display:none; }
+    body.product-open .app{ display:none; }
+
     /* Small devices polish */
     @media (max-width: 360px){
       .topbar-card{ padding: 9px 12px; }
@@ -717,6 +1267,12 @@
       .topbar-right{ gap: 12px; font-size: 11px; }
       .floatbrand{ width:28px; height:28px; }
       .floatbar-right{ gap: 10px; font-size: 10.5px; }
+
+      .productbar-card{ padding: 9px 10px; }
+      .backbtn{ width:38px; height:38px; }
+      .productbar-spacer{ width:38px; height:38px; }
+      .g-arrow{ width:38px; height:38px; }
+
       .cat{ font-size: 10px; }
       .grid{ gap: 26px 14px; }
       .name{ font-size: 13px; min-height: calc(2 * 1.1em); }
@@ -733,7 +1289,7 @@
     <div id="loaderHint" class="loader-hint">Совет: иногда помогает закрыть и открыть Telegram заново.</div>
   </div>
 
-  <!-- SEARCH DRAWER (fixed, will anchor under the active header) -->
+  <!-- SEARCH DRAWER -->
   <div id="searchDrawer" class="drawer" aria-hidden="true">
     <div class="drawer-card" role="dialog" aria-label="Поиск товаров">
       <div class="drawer-top">
@@ -753,8 +1309,15 @@
         <div class="sheet-title">корзина</div>
         <button id="cartClose" class="sheet-close" type="button">закрыть</button>
       </div>
+
       <div class="sheet-body">
-        это черновик корзины. позже сюда добавим товары, количество и оформление.
+        <div id="cartEmpty" class="cart-empty" style="display:none;">корзина пустая</div>
+        <div id="cartList" class="cart-list"></div>
+
+        <div class="cart-sum">
+          <div id="cartTotal" class="cart-total">итого: 0 rub</div>
+          <button id="cartOrderBtn" class="cart-order" type="button">заказать сейчас</button>
+        </div>
       </div>
     </div>
   </div>
@@ -779,6 +1342,117 @@
     </div>
   </div>
 
+  <!-- =========================
+       PRODUCT VIEW (screen B)
+       ========================= -->
+  <section id="productView" class="product-view" aria-hidden="true">
+    <div id="productScroll" class="product-scroll safe top-safe">
+      <header class="productbar" aria-label="Навигация товара">
+        <div class="productbar-card">
+          <button id="productBack" class="backbtn" type="button" aria-label="Назад">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M14.5 6.5L9 12l5.5 5.5" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+          <div id="productBarTitle" class="productbar-title">FURUYUME</div>
+          <div class="productbar-spacer" aria-hidden="true"></div>
+        </div>
+      </header>
+
+      <div class="pwrap">
+        <section class="gallery" aria-label="Фото товара">
+          <div class="gallery-stage">
+            <img id="galleryImg" src="" alt="">
+            <button id="gPrev" class="g-arrow g-left" type="button" aria-label="Предыдущее фото">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M14.5 6.5L9 12l5.5 5.5" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button id="gNext" class="g-arrow g-right" type="button" aria-label="Следующее фото">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M9.5 6.5L15 12l-5.5 5.5" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <div id="thumbs" class="thumbs" aria-label="Миниатюры">
+            <!-- injected -->
+          </div>
+        </section>
+
+        <section class="pinfo" aria-label="Информация о товаре">
+          <div id="pTitle" class="ptitle"></div>
+          <div id="pSku" class="psku"></div>
+
+          <div class="pprice" aria-label="Цена">
+            <span id="pPrice"></span>
+            <span id="pOld" class="pold"></span>
+          </div>
+
+          <div id="pSizes" class="psizes" aria-label="Размеры">
+            <!-- injected -->
+          </div>
+
+          <div class="pdesc" aria-label="Описание">
+            <h3>Описание</h3>
+            <ul id="pDescList"></ul>
+          </div>
+        </section>
+
+        <section class="related" aria-label="Смотрите также">
+          <div class="related-head">
+            <div class="related-title">Смотрите также</div>
+            <div class="rel-arrows">
+              <button id="relPrev" class="rel-btn" type="button" aria-label="Назад">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M14.5 6.5L9 12l5.5 5.5" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button id="relNext" class="rel-btn" type="button" aria-label="Вперёд">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9.5 6.5L15 12l-5.5 5.5" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div id="relTrack" class="rel-track">
+            <!-- injected -->
+          </div>
+        </section>
+
+        <!-- footer like main -->
+        <footer class="footer bottom-safe" aria-label="Нижнее меню">
+          <div class="footer-links">
+            <a href="https://t.me/" target="_blank" rel="noopener">telegram</a>
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener">instagram</a>
+            <a href="https://www.tiktok.com/" target="_blank" rel="noopener">tiktok</a>
+            <a href="https://example.com/" target="_blank" rel="noopener">site</a>
+          </div>
+
+          <div class="footer-legal">
+            <a href="https://example.com/privacy" target="_blank" rel="noopener">политика конфиденциальности</a>
+            <a href="https://example.com/offer" target="_blank" rel="noopener">договор оферты</a>
+          </div>
+
+          <div class="footer-copy">FURUYUME © 2026</div>
+        </footer>
+      </div>
+    </div>
+
+    <!-- fixed actions -->
+    <div class="product-actions safe" aria-label="Действия">
+      <div class="actions-inner">
+        <button id="buyNowBtn" class="act-btn btn-primary" type="button">заказать сейчас</button>
+        <button id="addToCartBtn" class="act-btn btn-ghost" type="button">добавить в корзину</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================
+       MAIN APP (catalog)
+       ========================= -->
   <div class="app">
     <div class="header-space" aria-hidden="true"></div>
 
@@ -809,7 +1483,7 @@
       </div>
     </section>
 
-    <!-- CATEGORIES (STATIC) -->
+    <!-- CATEGORIES -->
     <section class="categories safe" aria-label="Категории">
       <div class="cat-wrap" id="catWrap">
         <!-- injected -->
@@ -855,17 +1529,124 @@
       { id: "shoes", label: "Обувь" }
     ];
 
-    // assets рядом:
-    // logo.png / hero.png / sweater.png / dolyami.png
+    // =========================
+    // ✅ PRODUCTS (каждому товару 4 фото)
+    // Как назвать фотки — смотри внизу ответа (я расписал).
+    // =========================
     const PRODUCTS = [
-      { id:"p1", img:"sweater.png", name:"REFLECTIVE SWEATER (BLACK) — ARCHIVE DROP", badge:"РАСПРОДАЖА", price:"7 600 RUB", oldPrice:"11 600 RUB", dolyami:"Долями по 1 900 ₽", categories:["olymp"] },
-      { id:"p2", img:"sweater.png", name:"ARCHIVE TRACK JACKET — RARE PIECE",        badge:"LIMITED",     price:"12 900 RUB", oldPrice:"15 900 RUB", dolyami:"Долями по 3 225 ₽", categories:["olymp"] },
-      { id:"p3", img:"sweater.png", name:"BOMBER (VINTAGE) — EARLY 2000s",            badge:"РАСПРОДАЖА",  price:"9 900 RUB",  oldPrice:"13 900 RUB", dolyami:"Долями по 2 475 ₽", categories:["bombers"] },
-      { id:"p4", img:"sweater.png", name:"HOODIE (ARCHIVE) — SOFT WASHED",            badge:"DROP",        price:"8 500 RUB",  oldPrice:"10 900 RUB", dolyami:"Долями по 2 125 ₽", categories:["hoodies"] },
-      { id:"p5", img:"sweater.png", name:"LONGSLEEVE (RARE) — GRAPHIC EDITION",       badge:"РАСПРОДАЖА",  price:"5 400 RUB",  oldPrice:"7 900 RUB",  dolyami:"Долями по 1 350 ₽", categories:["longsleeves"] },
-      { id:"p6", img:"sweater.png", name:"PANTS (ARCHIVE) — STRAIGHT FIT",            badge:"NEW",         price:"6 800 RUB",  oldPrice:"8 900 RUB",  dolyami:"Долями по 1 700 ₽", categories:["pants"] }
+      {
+        id:"p1",
+        slug:"reflective-sweater-black",
+        name:"REFLECTIVE SWEATER (BLACK) — ARCHIVE DROP",
+        badge:"РАСПРОДАЖА",
+        priceRub: 7600,
+        oldPriceRub: 11600,
+        dolyami:"Долями по 1 900 ₽",
+        categories:["olymp"],
+        gallery: ["p1_1.png","p1_2.png","p1_3.png","p1_4.png"],
+        articles: { S:"RFLSW-S", M:"RFLSW-M", L:"RFLSW-L", XL:"RFLSW-XL" },
+        desc: [
+          "Oversize-крой",
+          "Рефлектив при вспышке/свете",
+          "Металлическое лого на груди",
+          "Ручная стирка, не отбеливать, сушить в темноте"
+        ]
+      },
+      {
+        id:"p2",
+        slug:"archive-track-jacket",
+        name:"ARCHIVE TRACK JACKET — RARE PIECE",
+        badge:"LIMITED",
+        priceRub: 12900,
+        oldPriceRub: 15900,
+        dolyami:"Долями по 3 225 ₽",
+        categories:["olymp"],
+        gallery: ["p2_1.png","p2_2.png","p2_3.png","p2_4.png"],
+        articles: { S:"ATJ-S", M:"ATJ-M", L:"ATJ-L", XL:"ATJ-XL" },
+        desc: [
+          "Плотная ткань + мягкая посадка",
+          "Детали: швы/ворот/манжеты",
+          "Ограниченный дроп",
+          "Уход: деликатная стирка"
+        ]
+      },
+      {
+        id:"p3",
+        slug:"bomber-vintage",
+        name:"BOMBER (VINTAGE) — EARLY 2000s",
+        badge:"РАСПРОДАЖА",
+        priceRub: 9900,
+        oldPriceRub: 13900,
+        dolyami:"Долями по 2 475 ₽",
+        categories:["bombers"],
+        gallery: ["p3_1.png","p3_2.png","p3_3.png","p3_4.png"],
+        articles: { S:"BMBR-S", M:"BMBR-M", L:"BMBR-L", XL:"BMBR-XL" },
+        desc: [
+          "Вайб винтаж 2000s",
+          "Объёмный силуэт",
+          "Акцентные детали",
+          "Уход: химчистка/деликатно"
+        ]
+      },
+      {
+        id:"p4",
+        slug:"hoodie-archive",
+        name:"HOODIE (ARCHIVE) — SOFT WASHED",
+        badge:"DROP",
+        priceRub: 8500,
+        oldPriceRub: 10900,
+        dolyami:"Долями по 2 125 ₽",
+        categories:["hoodies"],
+        gallery: ["p4_1.png","p4_2.png","p4_3.png","p4_4.png"],
+        articles: { S:"HDAR-S", M:"HDAR-M", L:"HDAR-L", XL:"HDAR-XL" },
+        desc: [
+          "Мягкая washed-текстура",
+          "Oversize, плотная посадка",
+          "Лого/принт (по версии дропа)",
+          "Уход: ручная/деликатная стирка"
+        ]
+      },
+      {
+        id:"p5",
+        slug:"longsleeve-rare",
+        name:"LONGSLEEVE (RARE) — GRAPHIC EDITION",
+        badge:"РАСПРОДАЖА",
+        priceRub: 5400,
+        oldPriceRub: 7900,
+        dolyami:"Долями по 1 350 ₽",
+        categories:["longsleeves"],
+        gallery: ["p5_1.png","p5_2.png","p5_3.png","p5_4.png"],
+        articles: { S:"LSRG-S", M:"LSRG-M", L:"LSRG-L", XL:"LSRG-XL" },
+        desc: [
+          "Графика (edition)",
+          "Комфортная ткань",
+          "Ровный крой",
+          "Уход: деликатная стирка"
+        ]
+      },
+      {
+        id:"p6",
+        slug:"pants-archive-straight",
+        name:"PANTS (ARCHIVE) — STRAIGHT FIT",
+        badge:"NEW",
+        priceRub: 6800,
+        oldPriceRub: 8900,
+        dolyami:"Долями по 1 700 ₽",
+        categories:["pants"],
+        gallery: ["p6_1.png","p6_2.png","p6_3.png","p6_4.png"],
+        articles: { S:"PNAR-S", M:"PNAR-M", L:"PNAR-L", XL:"PNAR-XL" },
+        desc: [
+          "Straight fit",
+          "Комфортная посадка",
+          "Детали: карманы/швы",
+          "Уход: деликатная стирка"
+        ]
+      }
     ];
 
+    // =========================
+    // ELEMENTS
+    // =========================
     const loader = document.getElementById("loader");
     const loaderHint = document.getElementById("loaderHint");
 
@@ -886,11 +1667,54 @@
     // Cart modal
     const cartModal = document.getElementById("cartModal");
     const cartClose = document.getElementById("cartClose");
+    const cartList = document.getElementById("cartList");
+    const cartEmpty = document.getElementById("cartEmpty");
+    const cartTotal = document.getElementById("cartTotal");
+    const cartOrderBtn = document.getElementById("cartOrderBtn");
+
+    // Product view
+    const productView = document.getElementById("productView");
+    const productScroll = document.getElementById("productScroll");
+    const productBack = document.getElementById("productBack");
+    const productBarTitle = document.getElementById("productBarTitle");
+
+    const galleryImg = document.getElementById("galleryImg");
+    const thumbs = document.getElementById("thumbs");
+    const gPrev = document.getElementById("gPrev");
+    const gNext = document.getElementById("gNext");
+
+    const pTitle = document.getElementById("pTitle");
+    const pSku = document.getElementById("pSku");
+    const pPrice = document.getElementById("pPrice");
+    const pOld = document.getElementById("pOld");
+    const pSizes = document.getElementById("pSizes");
+    const pDescList = document.getElementById("pDescList");
+
+    const relTrack = document.getElementById("relTrack");
+    const relPrev = document.getElementById("relPrev");
+    const relNext = document.getElementById("relNext");
+
+    const buyNowBtn = document.getElementById("buyNowBtn");
+    const addToCartBtn = document.getElementById("addToCartBtn");
 
     const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
+    // =========================
+    // HELPERS
+    // =========================
+    const SIZES = ["S","M","L","XL"];
+
+    function fmtRub(n){
+      const s = String(Math.round(Number(n) || 0));
+      return s.replace(/\B(?=(\d{3})+(?!\d))/g, " ") + " RUB";
+    }
+
     function scrollToTop() {
       window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function byId(id){
+      return PRODUCTS.find(p => p.id === id) || null;
     }
 
     function renderCategories(activeId) {
@@ -908,15 +1732,15 @@
     function renderProducts(catId) {
       const items = filterProducts(catId);
       grid.innerHTML = items.map(p => `
-        <article class="card">
-          <div class="img">
-            <img class="product-photo" src="${p.img}" alt="${p.name}">
+        <article class="card" data-product-id="${p.id}">
+          <div class="img" role="button" tabindex="0" aria-label="Открыть ${p.name}" data-open-product="${p.id}">
+            <img class="product-photo" src="${p.gallery[0]}" alt="${p.name}">
           </div>
-          <div class="name">${p.name}</div>
+          <div class="name" role="button" tabindex="0" aria-label="Открыть ${p.name}" data-open-product="${p.id}">${p.name}</div>
           <div class="desc">${p.badge}</div>
           <div class="price-row">
-            <span>${p.price}</span>
-            <span class="old">${p.oldPrice}</span>
+            <span>${fmtRub(p.priceRub)}</span>
+            <span class="old">${fmtRub(p.oldPriceRub)}</span>
           </div>
           <div class="dolyami" aria-label="${p.dolyami}">
             <img class="dolyami-icon" src="dolyami.png" alt="" aria-hidden="true">
@@ -934,6 +1758,9 @@
       grid.classList.remove("fade-out");
     }
 
+    // =========================
+    // FLOATING HEADER
+    // =========================
     function setupFloatingHeader() {
       const io = new IntersectionObserver((entries) => {
         const e = entries[0];
@@ -946,6 +1773,9 @@
       io.observe(mainHeader);
     }
 
+    // =========================
+    // LOADER
+    // =========================
     async function hideLoaderSoon() {
       const hintTimer = setTimeout(() => loaderHint.classList.add("show"), 2200);
 
@@ -959,10 +1789,9 @@
     }
 
     // =========================
-    // ✅ SEARCH LOGIC (2)
+    // SEARCH
     // =========================
     function getHeaderAnchorRect() {
-      // если плавающая шапка видна — якорим под ней, иначе под основной
       const isFloat = floatbar.classList.contains("show");
       const anchor = isFloat ? floatbar.querySelector(".floatbar-card") : mainHeader.querySelector(".topbar-card");
       if (!anchor) return null;
@@ -971,7 +1800,7 @@
 
     function setDrawerTop() {
       const r = getHeaderAnchorRect();
-      const top = r ? (r.bottom + 10) : (10 + (window.visualViewport ? window.visualViewport.offsetTop : 0));
+      const top = r ? (r.bottom + 10) : 10;
       searchDrawer.style.top = `${Math.max(8, top)}px`;
     }
 
@@ -983,9 +1812,9 @@
       }
 
       const found = PRODUCTS.filter(p => {
-        const hay = `${p.name} ${p.badge} ${p.price}`.toLowerCase();
+        const hay = `${p.name} ${p.badge} ${fmtRub(p.priceRub)} ${p.id}`.toLowerCase();
         return hay.includes(q);
-      }).slice(0, 8);
+      }).slice(0, 10);
 
       if (!found.length) {
         searchResults.innerHTML = `<div class="drawer-empty">ничего не найдено</div>`;
@@ -993,26 +1822,25 @@
       }
 
       searchResults.innerHTML = found.map(p => `
-        <div class="result" role="listitem" aria-label="${p.name}">
-          <div class="result-img"><img src="${p.img}" alt=""></div>
+        <div class="result" role="listitem" aria-label="${p.name}" data-open-product="${p.id}">
+          <div class="result-img"><img src="${p.gallery[0]}" alt=""></div>
           <div class="result-mid">
             <div class="result-name">${p.name}</div>
             <div class="result-meta">${p.badge}</div>
           </div>
-          <div class="result-price">${p.price}</div>
+          <div class="result-price">${fmtRub(p.priceRub)}</div>
         </div>
       `).join("");
     }
 
     function openSearch() {
+      if (document.body.classList.contains("product-open")) return; // в карточке товара не открываем
       setDrawerTop();
       searchDrawer.classList.add("open");
       searchDrawer.setAttribute("aria-hidden", "false");
-      // чуть позже, чтобы анимация/позиция села
       setTimeout(() => {
         try { searchInput.focus({ preventScroll: true }); } catch(e){ searchInput.focus(); }
       }, 60);
-      // начальное состояние
       renderSearchResults(searchInput.value);
     }
 
@@ -1028,15 +1856,240 @@
     }
 
     // =========================
-    // ✅ CART LOGIC (2)
+    // CART (in-memory)
     // =========================
+    // key: `${productId}__${size}`
+    const cart = new Map();
+
+    function cartKey(pid, size){
+      return `${pid}__${size}`;
+    }
+
+    function addToCart(pid, size){
+      const p = byId(pid);
+      if (!p) return;
+      const k = cartKey(pid, size);
+      const cur = cart.get(k);
+      if (cur) {
+        cart.set(k, { ...cur, qty: cur.qty + 1 });
+      } else {
+        cart.set(k, { pid, size, qty: 1 });
+      }
+      renderCart();
+    }
+
+    function setQty(pid, size, qty){
+      const k = cartKey(pid, size);
+      if (qty <= 0) cart.delete(k);
+      else {
+        const cur = cart.get(k);
+        if (cur) cart.set(k, { ...cur, qty });
+      }
+      renderCart();
+    }
+
+    function getCartItems(){
+      return Array.from(cart.values());
+    }
+
+    function calcCartTotal(){
+      let sum = 0;
+      for (const it of getCartItems()){
+        const p = byId(it.pid);
+        if (!p) continue;
+        sum += (p.priceRub * it.qty);
+      }
+      return sum;
+    }
+
+    function renderCart(){
+      const items = getCartItems();
+
+      if (!items.length){
+        cartEmpty.style.display = "block";
+        cartList.innerHTML = "";
+        cartTotal.textContent = "итого: 0 rub";
+        return;
+      }
+
+      cartEmpty.style.display = "none";
+
+      cartList.innerHTML = items.map(it => {
+        const p = byId(it.pid);
+        if (!p) return "";
+        const line = `${it.size} • ${fmtRub(p.priceRub)}`;
+        return `
+          <div class="cart-row" data-cart-pid="${it.pid}" data-cart-size="${it.size}">
+            <div class="cart-img"><img src="${p.gallery[0]}" alt=""></div>
+            <div class="cart-mid">
+              <div class="cart-name">${p.name}</div>
+              <div class="cart-meta">${line}</div>
+            </div>
+            <div class="cart-qty" aria-label="Количество">
+              <button class="qty-btn" type="button" data-cart-act="minus" aria-label="Минус">−</button>
+              <div class="qty-val">${it.qty}</div>
+              <button class="qty-btn" type="button" data-cart-act="plus" aria-label="Плюс">+</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      cartTotal.textContent = `итого: ${fmtRub(calcCartTotal()).toLowerCase()}`;
+    }
+
     function openCart() {
+      renderCart();
       cartModal.classList.add("show");
       cartModal.setAttribute("aria-hidden", "false");
+      requestAnimationFrame(() => cartModal.classList.add("visible"));
     }
     function closeCart() {
-      cartModal.classList.remove("show");
+      cartModal.classList.remove("visible");
       cartModal.setAttribute("aria-hidden", "true");
+      setTimeout(() => cartModal.classList.remove("show"), 180);
+    }
+
+    function buildOrderText(lines, totalRub){
+      // строго как ты просил
+      // "Здравствуйте! Хочу оформить заказ:\n\n Название модели, размер и цена.\n\nИтого: ..."
+      const header = "Здравствуйте! Хочу оформить заказ:";
+      const body = lines.join("\n");
+      const total = `Итого: ${fmtRub(totalRub)}`;
+      return `${header}\n\n${body}\n\n${total}`;
+    }
+
+    function openTelegramOrder(text){
+      const url = `https://t.me/furuyumeorders?text=${encodeURIComponent(text)}`;
+      window.open(url, "_blank", "noopener");
+    }
+
+    function orderFromCart(){
+      const items = getCartItems();
+      if (!items.length) return;
+
+      const lines = items.map(it => {
+        const p = byId(it.pid);
+        const one = fmtRub(p.priceRub);
+        const subtotal = fmtRub(p.priceRub * it.qty);
+        return `${p.name}, ${it.size}, ${one} × ${it.qty} = ${subtotal}`;
+      });
+
+      const total = calcCartTotal();
+      const text = buildOrderText(lines, total);
+      openTelegramOrder(text);
+    }
+
+    // =========================
+    // PRODUCT VIEW (screen)
+    // =========================
+    let currentProductId = null;
+    let currentSize = "M";
+    let currentImgIndex = 0;
+
+    function setGalleryIndex(idx){
+      const p = byId(currentProductId);
+      if (!p) return;
+      const total = p.gallery.length;
+      currentImgIndex = (idx + total) % total;
+      galleryImg.src = p.gallery[currentImgIndex];
+      galleryImg.alt = p.name;
+
+      // thumbs
+      const t = thumbs.querySelectorAll(".thumb");
+      t.forEach((el, i) => el.classList.toggle("active", i === currentImgIndex));
+    }
+
+    function renderThumbs(p){
+      thumbs.innerHTML = p.gallery.map((src, i) => `
+        <button class="thumb ${i===0 ? "active":""}" type="button" data-thumb="${i}" aria-label="Фото ${i+1}">
+          <img src="${src}" alt="">
+        </button>
+      `).join("");
+    }
+
+    function renderSizes(p){
+      pSizes.innerHTML = SIZES.map(s => `
+        <button class="sizebtn ${s===currentSize ? "active":""}" type="button" data-size="${s}" aria-label="Размер ${s}">${s}</button>
+      `).join("");
+    }
+
+    function renderDesc(p){
+      pDescList.innerHTML = (p.desc || []).map(x => `<li>${x}</li>`).join("");
+    }
+
+    function renderRelated(p){
+      const others = PRODUCTS.filter(x => x.id !== p.id);
+      // pseudo-random but stable-ish: shuffle by Math.random
+      const pick = others.sort(() => Math.random() - 0.5).slice(0, 4);
+
+      relTrack.innerHTML = pick.map(x => `
+        <div class="rel-card" role="button" tabindex="0" data-open-product="${x.id}" aria-label="Открыть ${x.name}">
+          <div class="rel-img"><img src="${x.gallery[0]}" alt=""></div>
+          <div class="rel-name">${x.name}</div>
+          <div class="rel-price">${fmtRub(x.priceRub)}</div>
+        </div>
+      `).join("");
+    }
+
+    function updateSkuLine(){
+      const p = byId(currentProductId);
+      if (!p) return;
+      const art = (p.articles && p.articles[currentSize]) ? p.articles[currentSize] : `${p.id}-${currentSize}`;
+      pSku.textContent = `Артикул: ${art}`;
+    }
+
+    function openProduct(pid){
+      const p = byId(pid);
+      if (!p) return;
+
+      closeSearch(); // если поиск открыт — закрываем
+      currentProductId = pid;
+      currentSize = "M";
+      currentImgIndex = 0;
+
+      // UI
+      document.body.classList.add("product-open");
+      productView.classList.add("show");
+      productView.setAttribute("aria-hidden", "false");
+      productScroll.scrollTo({ top: 0, behavior: "instant" });
+
+      productBarTitle.textContent = "FURUYUME";
+
+      pTitle.textContent = p.name;
+      pPrice.textContent = fmtRub(p.priceRub);
+      pOld.textContent = fmtRub(p.oldPriceRub);
+
+      renderThumbs(p);
+      renderSizes(p);
+      renderDesc(p);
+      renderRelated(p);
+      updateSkuLine();
+      setGalleryIndex(0);
+    }
+
+    function closeProduct(){
+      productView.classList.remove("show");
+      productView.setAttribute("aria-hidden", "true");
+      document.body.classList.remove("product-open");
+      currentProductId = null;
+    }
+
+    function orderNowCurrent(){
+      const p = byId(currentProductId);
+      if (!p) return;
+
+      const line = `${p.name}, ${currentSize}, ${fmtRub(p.priceRub)}`;
+      const text = buildOrderText([line], p.priceRub);
+      openTelegramOrder(text);
+    }
+
+    function addCurrentToCart(){
+      const p = byId(currentProductId);
+      if (!p) return;
+      addToCart(p.id, currentSize);
+      // микро-отклик: чуть “мигаем” кнопкой
+      addToCartBtn.style.opacity = "0.75";
+      setTimeout(() => addToCartBtn.style.opacity = "", 160);
     }
 
     // =========================
@@ -1046,7 +2099,6 @@
       const DEFAULT_CAT = "all";
       renderCategories(DEFAULT_CAT);
       renderProducts(DEFAULT_CAT);
-
       setupFloatingHeader();
 
       if (logoBtn) logoBtn.addEventListener("click", scrollToTop);
@@ -1065,54 +2117,114 @@
         await switchCategory(nextId);
       });
 
-      // ✅ кнопки шапки: поиск / корзина (работают и в main, и в float)
+      // header buttons: search / cart
       document.addEventListener("click", (e) => {
         const btn = e.target.closest("[data-action]");
         if (!btn) return;
 
         const act = btn.getAttribute("data-action");
-        if (act === "search") {
-          toggleSearch();
-        }
-        if (act === "cart") {
-          openCart();
-        }
+        if (act === "search") toggleSearch();
+        if (act === "cart") openCart();
       });
 
-      // поиск: закрыть
+      // search events
       searchClose.addEventListener("click", closeSearch);
       searchInput.addEventListener("input", (e) => renderSearchResults(e.target.value));
 
-      // закрытие поиска по клику вне карточки
       document.addEventListener("pointerdown", (e) => {
         if (!searchDrawer.classList.contains("open")) return;
         const card = searchDrawer.querySelector(".drawer-card");
         const actionBtn = e.target.closest('[data-action="search"]');
-        if (actionBtn) return; // кликом по кнопке управляем toggleSearch()
+        if (actionBtn) return;
         if (card && !card.contains(e.target)) closeSearch();
       });
 
-      // следим за позиционированием drawer при скролле/ресайзе
       window.addEventListener("scroll", () => {
         if (!searchDrawer.classList.contains("open")) return;
         setDrawerTop();
       }, { passive: true });
+
       window.addEventListener("resize", () => {
         if (!searchDrawer.classList.contains("open")) return;
         setDrawerTop();
       });
 
-      // корзина: закрыть
+      // open product from grid / name / img / search results / related
+      document.addEventListener("click", (e) => {
+        const open = e.target.closest("[data-open-product]");
+        if (!open) return;
+        const pid = open.getAttribute("data-open-product");
+        if (!pid) return;
+        openProduct(pid);
+      });
+
+      // product: back
+      productBack.addEventListener("click", closeProduct);
+
+      // gallery arrows
+      gPrev.addEventListener("click", () => setGalleryIndex(currentImgIndex - 1));
+      gNext.addEventListener("click", () => setGalleryIndex(currentImgIndex + 1));
+
+      // thumbs click
+      thumbs.addEventListener("click", (e) => {
+        const t = e.target.closest("[data-thumb]");
+        if (!t) return;
+        const i = Number(t.getAttribute("data-thumb"));
+        if (Number.isFinite(i)) setGalleryIndex(i);
+      });
+
+      // sizes click
+      pSizes.addEventListener("click", (e) => {
+        const b = e.target.closest("[data-size]");
+        if (!b) return;
+        const s = b.getAttribute("data-size");
+        if (!SIZES.includes(s)) return;
+        currentSize = s;
+        // ui
+        pSizes.querySelectorAll(".sizebtn").forEach(x => x.classList.toggle("active", x.getAttribute("data-size") === s));
+        updateSkuLine();
+      });
+
+      // related arrows
+      relPrev.addEventListener("click", () => relTrack.scrollBy({ left: -220, top: 0, behavior: "smooth" }));
+      relNext.addEventListener("click", () => relTrack.scrollBy({ left:  220, top: 0, behavior: "smooth" }));
+
+      // product actions
+      buyNowBtn.addEventListener("click", orderNowCurrent);
+      addToCartBtn.addEventListener("click", addCurrentToCart);
+
+      // cart close
       cartClose.addEventListener("click", closeCart);
       cartModal.addEventListener("click", (e) => {
         if (e.target === cartModal) closeCart();
       });
 
-      // ESC закрывает (на всякий)
+      // cart plus/minus
+      cartList.addEventListener("click", (e) => {
+        const row = e.target.closest(".cart-row");
+        if (!row) return;
+        const pid = row.getAttribute("data-cart-pid");
+        const size = row.getAttribute("data-cart-size");
+        const act = e.target.closest("[data-cart-act]")?.getAttribute("data-cart-act");
+        if (!pid || !size || !act) return;
+
+        const k = cartKey(pid, size);
+        const cur = cart.get(k);
+        if (!cur) return;
+
+        if (act === "plus") setQty(pid, size, cur.qty + 1);
+        if (act === "minus") setQty(pid, size, cur.qty - 1);
+      });
+
+      // cart order
+      cartOrderBtn.addEventListener("click", orderFromCart);
+
+      // ESC closes
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
           closeSearch();
           closeCart();
+          if (document.body.classList.contains("product-open")) closeProduct();
         }
       });
 
