@@ -38,7 +38,7 @@
       -moz-osx-font-smoothing: grayscale;
       text-rendering: geometricPrecision;
       overflow-x:hidden;
-      touch-action: pan-y; /* ✅ (2) блокируем pinch-zoom жесты, оставляем вертикальный скролл */
+      touch-action: pan-y; /* блокируем pinch-zoom, оставляем вертикальный скролл */
     }
 
     a{ color:inherit; text-decoration:none; }
@@ -112,47 +112,66 @@
 
     .header-space{ height: 0px; }
 
+    /* =========================
+       ✅ (1) NEW MAIN HEADER LOOK
+       стеклянная плашка как у float, лого слева, кнопки справа
+       ========================= */
     .topbar{
       position:relative;
       padding-top: 2px;
       padding-bottom: 6px;
     }
 
-    /* ✅ (1) новая логика: всё слева, лого справа */
+    .topbar-card{
+      width: min(520px, 100%);
+      margin: 0 auto;
+      border-radius: 999px;
+      background: linear-gradient(180deg, var(--glass), var(--glass2));
+      background-color: rgba(255,255,255,.72);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(0,0,0,.06);
+      padding: 10px 14px;
+    }
+
     .topbar-inner{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap: 14px; /* расстояние между левым блоком и логотипом */
+      gap: 12px;
+      min-width:0;
     }
 
-    /* левый блок: ПОИСК / ПОДДЕРЖКА / ОТЗЫВЫ / КОРЗИНА */
     .topbar-left{
       display:flex;
       align-items:center;
-      gap: 18px; /* ✅ одинаковое расстояние между словами */
-      min-width:0;
-      flex:1 1 auto;
       justify-content:flex-start;
-      font-weight:400;
-      font-size:12px;
-      text-transform: uppercase;
-      letter-spacing: var(--ls);
-      white-space:nowrap;
+      flex:0 0 auto;
     }
 
-    /* правый блок: только лого */
     .topbar-right{
       display:flex;
       align-items:center;
       justify-content:flex-end;
-      flex:0 0 auto;
+      gap: 16px; /* одинаковое расстояние между словами */
+      min-width:0;
+      flex:1 1 auto;
+      white-space:nowrap;
+      overflow:hidden;
+      font-weight:400;
+      font-size:12px;
+      text-transform: uppercase;
+      letter-spacing: var(--ls);
     }
 
     .nav-item{
       opacity: .92;
       transition: opacity .18s ease, transform .18s ease;
       -webkit-tap-highlight-color: transparent;
+      cursor:pointer;
+      user-select:none;
+      flex:0 0 auto;
     }
     .nav-item:active{ opacity: .65; transform: scale(.98); }
 
@@ -161,10 +180,11 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      width:56px; height:56px;
+      width:44px; height:44px; /* чуть меньше, чтобы справа текст не давил */
       cursor:pointer;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
+      flex:0 0 auto;
     }
     .brand img{
       width:100%;
@@ -190,10 +210,14 @@
       width:100%;
       height:auto;
       display:block;
-      object-fit:cover; /* красиво под обрез */
+      object-fit:cover;
     }
 
-    /* Floating glass header */
+    /* =========================
+       FLOATING GLASS HEADER
+       ✅ (1) лого слева, кнопки справа
+       ✅ сделать поменьше, чтобы не налезало
+       ========================= */
     .floatbar{
       position:fixed;
       left:0; right:0;
@@ -208,18 +232,13 @@
       pointer-events:auto;
       width: min(420px, calc(100% - 28px));
       border-radius: 999px;
-
       background: linear-gradient(180deg, var(--glass), var(--glass2));
       background-color: rgba(255,255,255,.72);
-
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
-
       box-shadow: var(--shadow);
       border: 1px solid rgba(0,0,0,.06);
-
-      padding: 10px 14px;
-
+      padding: 8px 12px; /* меньше */
       opacity:0;
       transform: translateY(-10px);
       transition: opacity .22s ease, transform .22s ease;
@@ -231,44 +250,276 @@
       transform: translateY(0);
     }
 
-    /* ✅ (1) внутри float тоже всё слева, лого справа */
     .floatbar-inner{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap: 12px;
+      gap: 10px;
+      min-width:0;
     }
     .floatbar-left{
       display:flex;
       align-items:center;
-      gap: 14px; /* чуть компактнее в плавающей */
-      flex:1 1 auto;
-      min-width:0;
-      font-weight:400;
-      font-size:12px;
-      text-transform: uppercase;
-      letter-spacing: var(--ls);
-      white-space:nowrap;
+      justify-content:flex-start;
+      flex:0 0 auto;
     }
     .floatbar-right{
       display:flex;
       align-items:center;
       justify-content:flex-end;
-      flex:0 0 auto;
+      gap: 12px; /* компактнее */
+      flex:1 1 auto;
+      min-width:0;
+      white-space:nowrap;
+      overflow:hidden;
+      font-weight:400;
+      font-size:11px; /* меньше */
+      text-transform: uppercase;
+      letter-spacing: var(--ls);
     }
 
     .floatbrand{
-      width:34px; height:34px;
+      width:30px; height:30px; /* меньше, чтобы текст не налезал */
       display:flex;
       align-items:center;
       justify-content:center;
       -webkit-tap-highlight-color: transparent;
+      cursor:pointer;
+      user-select:none;
+      flex:0 0 auto;
     }
     .floatbrand img{
       width:100%;
       height:100%;
       object-fit:contain;
       display:block;
+    }
+
+    /* =========================
+       SEARCH DRAWER (dropdown under Search button)
+       ========================= */
+    .drawer{
+      position: fixed;
+      left: 0; right: 0;
+      z-index: 3500;
+      pointer-events: none; /* включаем только когда open */
+    }
+    .drawer.open{ pointer-events:auto; }
+
+    .drawer-card{
+      width: min(520px, calc(100% - 28px));
+      margin: 0 auto;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255,255,255,.86), rgba(255,255,255,.68));
+      background-color: rgba(255,255,255,.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 18px 50px rgba(0,0,0,.12);
+      border: 1px solid rgba(0,0,0,.08);
+
+      overflow:hidden;
+
+      opacity:0;
+      transform: translateY(-6px);
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .drawer.open .drawer-card{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    .drawer-top{
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(0,0,0,.06);
+      display:flex;
+      align-items:center;
+      gap: 10px;
+    }
+    .drawer-top input{
+      width:100%;
+      border: 0;
+      outline: none;
+      background: transparent;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      letter-spacing: var(--ls);
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .drawer-top input::placeholder{
+      color: rgba(10,10,10,.45);
+      font-weight: 600;
+    }
+    .drawer-close{
+      flex:0 0 auto;
+      font-size:12px;
+      font-weight:700;
+      letter-spacing: var(--ls);
+      text-transform: uppercase;
+      opacity:.75;
+      cursor:pointer;
+      padding: 6px 8px;
+      border-radius: 10px;
+      transition: opacity .18s ease, transform .18s ease, background .18s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .drawer-close:active{
+      opacity:.6;
+      transform: scale(.98);
+      background: rgba(0,0,0,.04);
+    }
+
+    .drawer-results{
+      padding: 10px 12px 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      max-height: 44vh;
+      overflow:auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .result{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      padding: 10px 10px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.03);
+      border: 1px solid rgba(0,0,0,.05);
+    }
+    .result-img{
+      width:44px; height:44px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+      overflow:hidden;
+    }
+    .result-img img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+      pointer-events:none;
+      user-select:none;
+    }
+    .result-mid{
+      min-width:0;
+      flex:1 1 auto;
+    }
+    .result-name{
+      font-size:11px;
+      font-weight:800;
+      text-transform: uppercase;
+      letter-spacing: var(--ls);
+      line-height: 1.15;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .result-meta{
+      margin-top: 6px;
+      font-size:10px;
+      font-weight:700;
+      text-transform: uppercase;
+      letter-spacing: calc(var(--ls) + 0.02em);
+      opacity:.75;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .result-price{
+      flex:0 0 auto;
+      font-size:11px;
+      font-weight:900;
+      text-transform: uppercase;
+      letter-spacing: calc(var(--ls) + 0.02em);
+      opacity:.92;
+    }
+
+    .drawer-empty{
+      padding: 8px 2px 0;
+      text-align:center;
+      font-size:11px;
+      font-weight:700;
+      text-transform: uppercase;
+      letter-spacing: calc(var(--ls) + 0.02em);
+      opacity:.6;
+    }
+
+    /* =========================
+       CART MODAL
+       ========================= */
+    .modal{
+      position:fixed; inset:0;
+      z-index: 4000;
+      display:none;
+      align-items:flex-end;
+      justify-content:center;
+      background: rgba(0,0,0,.18);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .modal.show{ display:flex; }
+
+    .sheet{
+      width: min(520px, 100%);
+      margin: 0 auto;
+      border-radius: 22px 22px 0 0;
+      background: rgba(255,255,255,.92);
+      border: 1px solid rgba(0,0,0,.08);
+      box-shadow: 0 -18px 60px rgba(0,0,0,.18);
+      padding: 14px 14px 18px;
+      transform: translateY(10px);
+      opacity:0;
+      transition: transform .18s ease, opacity .18s ease;
+    }
+    .modal.show .sheet{
+      transform: translateY(0);
+      opacity:1;
+    }
+    .sheet-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+    .sheet-title{
+      font-size:12px;
+      font-weight:900;
+      letter-spacing: var(--ls);
+      text-transform: uppercase;
+    }
+    .sheet-close{
+      font-size:12px;
+      font-weight:800;
+      letter-spacing: var(--ls);
+      text-transform: uppercase;
+      opacity:.7;
+      padding: 8px 10px;
+      border-radius: 12px;
+      transition: opacity .18s ease, transform .18s ease, background .18s ease;
+      -webkit-tap-highlight-color: transparent;
+      cursor:pointer;
+    }
+    .sheet-close:active{
+      opacity:.55;
+      transform: scale(.98);
+      background: rgba(0,0,0,.04);
+    }
+    .sheet-body{
+      padding-top: 12px;
+      font-size:11px;
+      font-weight:700;
+      letter-spacing: calc(var(--ls) + 0.02em);
+      text-transform: uppercase;
+      opacity:.7;
+      line-height: 1.35;
     }
 
     /* Categories (STATIC) */
@@ -442,9 +693,8 @@
       margin-top: 0;
     }
 
-    /* ✅ (3) подпись FURUYUME © 2026 — по тем же расстояниям */
     .footer-copy{
-      margin-top: 12px; /* такое же расстояние, как между группами сейчас */
+      margin-top: 12px;
       text-align:center;
       font-weight:600;
       font-size:9px;
@@ -462,8 +712,11 @@
 
     /* Small devices polish */
     @media (max-width: 360px){
-      .topbar-left{ gap: 14px; font-size: 11px; }
-      .floatbar-left{ gap: 12px; font-size: 11px; }
+      .topbar-card{ padding: 9px 12px; }
+      .brand{ width:40px; height:40px; }
+      .topbar-right{ gap: 12px; font-size: 11px; }
+      .floatbrand{ width:28px; height:28px; }
+      .floatbar-right{ gap: 10px; font-size: 10.5px; }
       .cat{ font-size: 10px; }
       .grid{ gap: 26px 14px; }
       .name{ font-size: 13px; min-height: calc(2 * 1.1em); }
@@ -480,21 +733,47 @@
     <div id="loaderHint" class="loader-hint">Совет: иногда помогает закрыть и открыть Telegram заново.</div>
   </div>
 
+  <!-- SEARCH DRAWER (fixed, will anchor under the active header) -->
+  <div id="searchDrawer" class="drawer" aria-hidden="true">
+    <div class="drawer-card" role="dialog" aria-label="Поиск товаров">
+      <div class="drawer-top">
+        <input id="searchInput" type="text" inputmode="search" autocomplete="off" placeholder="ВВЕДИТЕ НАЗВАНИЕ ТОВАРА" aria-label="Поиск товаров">
+        <button id="searchClose" class="drawer-close" type="button" aria-label="Закрыть поиск">закрыть</button>
+      </div>
+      <div id="searchResults" class="drawer-results" aria-live="polite">
+        <div class="drawer-empty">начните ввод — появятся товары</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CART MODAL -->
+  <div id="cartModal" class="modal" aria-hidden="true">
+    <div class="sheet safe bottom-safe" role="dialog" aria-label="Корзина">
+      <div class="sheet-head">
+        <div class="sheet-title">корзина</div>
+        <button id="cartClose" class="sheet-close" type="button">закрыть</button>
+      </div>
+      <div class="sheet-body">
+        это черновик корзины. позже сюда добавим товары, количество и оформление.
+      </div>
+    </div>
+  </div>
+
   <!-- FLOATING GLASS HEADER -->
   <div id="floatbar" class="floatbar safe" aria-hidden="true">
     <div class="floatbar-card">
       <div class="floatbar-inner">
         <div class="floatbar-left">
-          <span class="nav-item">поиск</span>
-          <a class="nav-item" href="https://t.me/furuyumemngrs" target="_blank" rel="noopener">поддержка</a>
-          <span class="nav-item">отзывы</span>
-          <span class="nav-item">корзина</span>
+          <button class="floatbrand" id="floatLogoBtn" type="button" aria-label="FURUYUME — наверх">
+            <img src="logo.png" alt="FURUYUME">
+          </button>
         </div>
 
         <div class="floatbar-right">
-          <button class="floatbrand" id="floatLogoBtn" aria-label="FURUYUME — наверх">
-            <img src="logo.png" alt="FURUYUME">
-          </button>
+          <button class="nav-item" type="button" data-action="search" aria-label="ПОИСК">ПОИСК</button>
+          <a class="nav-item" href="https://t.me/furuyumemngrs" target="_blank" rel="noopener" aria-label="Поддержка">поддержка</a>
+          <a class="nav-item" href="https://t.me/furuyumedelivery/9" target="_blank" rel="noopener" aria-label="Отзывы">отзывы</a>
+          <button class="nav-item" type="button" data-action="cart" aria-label="КОРЗИНА">КОРЗИНА</button>
         </div>
       </div>
     </div>
@@ -505,24 +784,25 @@
 
     <!-- MAIN HEADER -->
     <header id="mainHeader" class="topbar safe top-safe">
-      <div class="topbar-inner">
-        <div class="topbar-left">
-          <span class="nav-item">поиск</span>
-          <a class="nav-item" href="https://t.me/furuyumemngrs" target="_blank" rel="noopener">поддержка</a>
-          <span class="nav-item">отзывы</span>
-          <span class="nav-item">корзина</span>
-        </div>
+      <div class="topbar-card">
+        <div class="topbar-inner">
+          <div class="topbar-left">
+            <button class="brand" id="logoBtn" type="button" aria-label="FURUYUME — наверх">
+              <img src="logo.png" alt="FURUYUME">
+            </button>
+          </div>
 
-        <div class="topbar-right">
-          <button class="brand" id="logoBtn" aria-label="FURUYUME — наверх">
-            <img src="logo.png" alt="FURUYUME">
-          </button>
+          <nav class="topbar-right" aria-label="Меню">
+            <button class="nav-item" type="button" data-action="search" aria-label="ПОИСК">ПОИСК</button>
+            <a class="nav-item" href="https://t.me/furuyumemngrs" target="_blank" rel="noopener" aria-label="Поддержка">поддержка</a>
+            <a class="nav-item" href="https://t.me/furuyumedelivery/9" target="_blank" rel="noopener" aria-label="Отзывы">отзывы</a>
+            <button class="nav-item" type="button" data-action="cart" aria-label="КОРЗИНА">КОРЗИНА</button>
+          </nav>
         </div>
       </div>
     </header>
 
-    <!-- ✅ (4) БЛОК С ФОТО ПОД ШАПКОЙ -->
-    <!-- Положи рядом файл: hero.png (или поменяй src на своё имя) -->
+    <!-- HERO IMAGE -->
     <section class="hero safe" aria-label="Фото">
       <div class="hero-card">
         <img src="hero.png" alt="FURUYUME">
@@ -559,7 +839,6 @@
         <a href="https://example.com/offer" target="_blank" rel="noopener">договор оферты</a>
       </div>
 
-      <!-- ✅ (3) -->
       <div class="footer-copy">FURUYUME © 2026</div>
     </footer>
   </div>
@@ -576,8 +855,8 @@
       { id: "shoes", label: "Обувь" }
     ];
 
-    // - sweater.png и dolyami.png лежат рядом с index.html
-    // - hero.png лежит рядом с index.html (для блока фото)
+    // assets рядом:
+    // logo.png / hero.png / sweater.png / dolyami.png
     const PRODUCTS = [
       { id:"p1", img:"sweater.png", name:"REFLECTIVE SWEATER (BLACK) — ARCHIVE DROP", badge:"РАСПРОДАЖА", price:"7 600 RUB", oldPrice:"11 600 RUB", dolyami:"Долями по 1 900 ₽", categories:["olymp"] },
       { id:"p2", img:"sweater.png", name:"ARCHIVE TRACK JACKET — RARE PIECE",        badge:"LIMITED",     price:"12 900 RUB", oldPrice:"15 900 RUB", dolyami:"Долями по 3 225 ₽", categories:["olymp"] },
@@ -589,12 +868,24 @@
 
     const loader = document.getElementById("loader");
     const loaderHint = document.getElementById("loaderHint");
+
     const mainHeader = document.getElementById("mainHeader");
     const floatbar = document.getElementById("floatbar");
     const logoBtn = document.getElementById("logoBtn");
     const floatLogoBtn = document.getElementById("floatLogoBtn");
+
     const catWrap = document.getElementById("catWrap");
     const grid = document.getElementById("grid");
+
+    // Search drawer
+    const searchDrawer = document.getElementById("searchDrawer");
+    const searchInput = document.getElementById("searchInput");
+    const searchClose = document.getElementById("searchClose");
+    const searchResults = document.getElementById("searchResults");
+
+    // Cart modal
+    const cartModal = document.getElementById("cartModal");
+    const cartClose = document.getElementById("cartClose");
 
     const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
@@ -667,6 +958,90 @@
       loader.style.display = "none";
     }
 
+    // =========================
+    // ✅ SEARCH LOGIC (2)
+    // =========================
+    function getHeaderAnchorRect() {
+      // если плавающая шапка видна — якорим под ней, иначе под основной
+      const isFloat = floatbar.classList.contains("show");
+      const anchor = isFloat ? floatbar.querySelector(".floatbar-card") : mainHeader.querySelector(".topbar-card");
+      if (!anchor) return null;
+      return anchor.getBoundingClientRect();
+    }
+
+    function setDrawerTop() {
+      const r = getHeaderAnchorRect();
+      const top = r ? (r.bottom + 10) : (10 + (window.visualViewport ? window.visualViewport.offsetTop : 0));
+      searchDrawer.style.top = `${Math.max(8, top)}px`;
+    }
+
+    function renderSearchResults(query) {
+      const q = (query || "").trim().toLowerCase();
+      if (!q) {
+        searchResults.innerHTML = `<div class="drawer-empty">начните ввод — появятся товары</div>`;
+        return;
+      }
+
+      const found = PRODUCTS.filter(p => {
+        const hay = `${p.name} ${p.badge} ${p.price}`.toLowerCase();
+        return hay.includes(q);
+      }).slice(0, 8);
+
+      if (!found.length) {
+        searchResults.innerHTML = `<div class="drawer-empty">ничего не найдено</div>`;
+        return;
+      }
+
+      searchResults.innerHTML = found.map(p => `
+        <div class="result" role="listitem" aria-label="${p.name}">
+          <div class="result-img"><img src="${p.img}" alt=""></div>
+          <div class="result-mid">
+            <div class="result-name">${p.name}</div>
+            <div class="result-meta">${p.badge}</div>
+          </div>
+          <div class="result-price">${p.price}</div>
+        </div>
+      `).join("");
+    }
+
+    function openSearch() {
+      setDrawerTop();
+      searchDrawer.classList.add("open");
+      searchDrawer.setAttribute("aria-hidden", "false");
+      // чуть позже, чтобы анимация/позиция села
+      setTimeout(() => {
+        try { searchInput.focus({ preventScroll: true }); } catch(e){ searchInput.focus(); }
+      }, 60);
+      // начальное состояние
+      renderSearchResults(searchInput.value);
+    }
+
+    function closeSearch() {
+      searchDrawer.classList.remove("open");
+      searchDrawer.setAttribute("aria-hidden", "true");
+    }
+
+    function toggleSearch() {
+      const isOpen = searchDrawer.classList.contains("open");
+      if (isOpen) closeSearch();
+      else openSearch();
+    }
+
+    // =========================
+    // ✅ CART LOGIC (2)
+    // =========================
+    function openCart() {
+      cartModal.classList.add("show");
+      cartModal.setAttribute("aria-hidden", "false");
+    }
+    function closeCart() {
+      cartModal.classList.remove("show");
+      cartModal.setAttribute("aria-hidden", "true");
+    }
+
+    // =========================
+    // INIT
+    // =========================
     (function init(){
       const DEFAULT_CAT = "all";
       renderCategories(DEFAULT_CAT);
@@ -690,8 +1065,58 @@
         await switchCategory(nextId);
       });
 
-      // ✅ (2) ещё один слой защиты от pinch-zoom / double-tap zoom
-      // iOS Safari: жест масштабирования и ctrl+wheel
+      // ✅ кнопки шапки: поиск / корзина (работают и в main, и в float)
+      document.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-action]");
+        if (!btn) return;
+
+        const act = btn.getAttribute("data-action");
+        if (act === "search") {
+          toggleSearch();
+        }
+        if (act === "cart") {
+          openCart();
+        }
+      });
+
+      // поиск: закрыть
+      searchClose.addEventListener("click", closeSearch);
+      searchInput.addEventListener("input", (e) => renderSearchResults(e.target.value));
+
+      // закрытие поиска по клику вне карточки
+      document.addEventListener("pointerdown", (e) => {
+        if (!searchDrawer.classList.contains("open")) return;
+        const card = searchDrawer.querySelector(".drawer-card");
+        const actionBtn = e.target.closest('[data-action="search"]');
+        if (actionBtn) return; // кликом по кнопке управляем toggleSearch()
+        if (card && !card.contains(e.target)) closeSearch();
+      });
+
+      // следим за позиционированием drawer при скролле/ресайзе
+      window.addEventListener("scroll", () => {
+        if (!searchDrawer.classList.contains("open")) return;
+        setDrawerTop();
+      }, { passive: true });
+      window.addEventListener("resize", () => {
+        if (!searchDrawer.classList.contains("open")) return;
+        setDrawerTop();
+      });
+
+      // корзина: закрыть
+      cartClose.addEventListener("click", closeCart);
+      cartModal.addEventListener("click", (e) => {
+        if (e.target === cartModal) closeCart();
+      });
+
+      // ESC закрывает (на всякий)
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeSearch();
+          closeCart();
+        }
+      });
+
+      // ✅ запрет pinch-zoom / ctrl+wheel / double-tap zoom
       document.addEventListener('gesturestart', (e) => e.preventDefault());
       document.addEventListener('gesturechange', (e) => e.preventDefault());
       document.addEventListener('gestureend', (e) => e.preventDefault());
@@ -707,6 +1132,7 @@
         lastTouchEnd = now;
       }, { passive: false });
 
+      // loader out
       if (document.readyState === "complete" || document.readyState === "interactive") {
         hideLoaderSoon();
       } else {
