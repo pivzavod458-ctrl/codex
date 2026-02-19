@@ -2,7 +2,8 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <!-- ✅ (2) запрет зума/приближения на мобилках -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
   <meta name="theme-color" content="#ffffff" />
   <title>FURUYUME</title>
 
@@ -37,6 +38,7 @@
       -moz-osx-font-smoothing: grayscale;
       text-rendering: geometricPrecision;
       overflow-x:hidden;
+      touch-action: pan-y; /* ✅ (2) блокируем pinch-zoom жесты, оставляем вертикальный скролл */
     }
 
     a{ color:inherit; text-decoration:none; }
@@ -47,7 +49,6 @@
       padding-left: max(16px, env(safe-area-inset-left));
       padding-right: max(16px, env(safe-area-inset-right));
     }
-    /* Убрали лишний верхний воздух: только safe-area + 2px */
     .top-safe{ padding-top: calc(env(safe-area-inset-top) + 2px); }
     .bottom-safe{ padding-bottom: max(16px, env(safe-area-inset-bottom)); }
 
@@ -109,8 +110,6 @@
       flex-direction:column;
     }
 
-    /* ВАЖНО: это и было “много пустого места сверху”.
-       Ставим 0, а observer и так работает по mainHeader. */
     .header-space{ height: 0px; }
 
     .topbar{
@@ -119,15 +118,22 @@
       padding-bottom: 6px;
     }
 
+    /* ✅ (1) новая логика: всё слева, лого справа */
     .topbar-inner{
-      display:grid;
-      grid-template-columns: 1fr auto 1fr;
-      align-items:center;
-    }
-
-    .topbar-left, .topbar-right{
       display:flex;
       align-items:center;
+      justify-content:space-between;
+      gap: 14px; /* расстояние между левым блоком и логотипом */
+    }
+
+    /* левый блок: ПОИСК / ПОДДЕРЖКА / ОТЗЫВЫ / КОРЗИНА */
+    .topbar-left{
+      display:flex;
+      align-items:center;
+      gap: 18px; /* ✅ одинаковое расстояние между словами */
+      min-width:0;
+      flex:1 1 auto;
+      justify-content:flex-start;
       font-weight:400;
       font-size:12px;
       text-transform: uppercase;
@@ -135,17 +141,12 @@
       white-space:nowrap;
     }
 
-    /* ✅ ФИКС 1: СИММЕТРИЯ
-       Левый блок прижимаем к центру (к логотипу), правый тоже к центру. */
-    .topbar-left{
-      justify-content:flex-end;  /* было flex-start */
-      gap:18px;
-      padding-right: 10px;       /* симметричный “воздух” от логотипа */
-    }
+    /* правый блок: только лого */
     .topbar-right{
-      justify-content:flex-start;/* было flex-end */
-      gap:18px;
-      padding-left: 10px;        /* симметричный “воздух” от логотипа */
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      flex:0 0 auto;
     }
 
     .nav-item{
@@ -161,7 +162,6 @@
       align-items:center;
       justify-content:center;
       width:56px; height:56px;
-      margin:0 auto;
       cursor:pointer;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
@@ -173,25 +173,43 @@
       display:block;
     }
 
+    /* ✅ (4) место под фотку под шапкой */
+    .hero{
+      padding-top: 10px;
+      padding-bottom: 6px;
+    }
+    .hero-card{
+      width: min(520px, 100%);
+      margin: 0 auto;
+      border-radius: 22px;
+      overflow:hidden;
+      border: 1px solid rgba(0,0,0,.06);
+      background: rgba(0,0,0,.02);
+    }
+    .hero-card img{
+      width:100%;
+      height:auto;
+      display:block;
+      object-fit:cover; /* красиво под обрез */
+    }
+
     /* Floating glass header */
     .floatbar{
       position:fixed;
       left:0; right:0;
-      top: calc(env(safe-area-inset-top) + 2px); /* ✅ ФИКС 4: меньше сверху */
+      top: calc(env(safe-area-inset-top) + 2px);
       z-index: 2000;
       display:flex;
       justify-content:center;
       pointer-events:none;
     }
 
-    /* ✅ ФИКС 3: анимацию делаем на card, чтобы плашка+текст ехали вместе */
     .floatbar-card{
       pointer-events:auto;
       width: min(420px, calc(100% - 28px));
       border-radius: 999px;
 
       background: linear-gradient(180deg, var(--glass), var(--glass2));
-      /* Фоллбек чтобы не было эффекта “текст без плашки” */
       background-color: rgba(255,255,255,.72);
 
       backdrop-filter: blur(14px);
@@ -213,25 +231,30 @@
       transform: translateY(0);
     }
 
+    /* ✅ (1) внутри float тоже всё слева, лого справа */
     .floatbar-inner{
-      display:grid;
-      grid-template-columns: 1fr auto 1fr;
+      display:flex;
       align-items:center;
+      justify-content:space-between;
+      gap: 12px;
     }
-    .floatbar .topbar-left,
-    .floatbar .topbar-right{
+    .floatbar-left{
+      display:flex;
+      align-items:center;
+      gap: 14px; /* чуть компактнее в плавающей */
+      flex:1 1 auto;
+      min-width:0;
+      font-weight:400;
       font-size:12px;
-      gap:14px;
+      text-transform: uppercase;
+      letter-spacing: var(--ls);
+      white-space:nowrap;
     }
-
-    /* ✅ ФИКС 1 (float): симметрия такая же */
-    .floatbar .topbar-left{
+    .floatbar-right{
+      display:flex;
+      align-items:center;
       justify-content:flex-end;
-      padding-right: 10px;
-    }
-    .floatbar .topbar-right{
-      justify-content:flex-start;
-      padding-left: 10px;
+      flex:0 0 auto;
     }
 
     .floatbrand{
@@ -304,7 +327,6 @@
       user-select:none;
     }
 
-    /* No background for product */
     .img{
       width:100%;
       aspect-ratio: 1/1;
@@ -328,7 +350,6 @@
       transform: translateZ(0);
     }
 
-    /* ✅ ФИКС 2: одинаковая высота под название */
     .name{
       margin-top: 14px;
       font-weight:650;
@@ -337,9 +358,9 @@
       letter-spacing: var(--ls);
 
       line-height: 1.1;
-      min-height: calc(2 * 1.1em);   /* всегда “две строки места” */
+      min-height: calc(2 * 1.1em);
       display: -webkit-box;
-      -webkit-line-clamp: 2;         /* максимум 2 строки */
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -400,13 +421,12 @@
       padding-bottom: 34px;
     }
 
-    /* ✅ ФИКС 5: ровные расстояния */
     .footer-links,
     .footer-legal{
       display:flex;
       justify-content:center;
       flex-wrap:wrap;
-      gap: 12px 18px;          /* одинаково для обоих блоков */
+      gap: 12px 18px;
       font-weight:600;
       font-size:9px;
       text-transform: uppercase;
@@ -415,11 +435,23 @@
     }
     .footer-links{
       opacity: .92;
-      margin-bottom: 12px;     /* одинаковый “воздух” между группами */
+      margin-bottom: 12px;
     }
     .footer-legal{
       opacity: .85;
       margin-top: 0;
+    }
+
+    /* ✅ (3) подпись FURUYUME © 2026 — по тем же расстояниям */
+    .footer-copy{
+      margin-top: 12px; /* такое же расстояние, как между группами сейчас */
+      text-align:center;
+      font-weight:600;
+      font-size:9px;
+      text-transform: uppercase;
+      letter-spacing: calc(var(--ls) + 0.03em);
+      opacity: .85;
+      line-height: 1.2;
     }
 
     .footer a{
@@ -430,7 +462,8 @@
 
     /* Small devices polish */
     @media (max-width: 360px){
-      .topbar-left,.topbar-right{ gap: 14px; font-size: 11px; }
+      .topbar-left{ gap: 14px; font-size: 11px; }
+      .floatbar-left{ gap: 12px; font-size: 11px; }
       .cat{ font-size: 10px; }
       .grid{ gap: 26px 14px; }
       .name{ font-size: 13px; min-height: calc(2 * 1.1em); }
@@ -451,18 +484,17 @@
   <div id="floatbar" class="floatbar safe" aria-hidden="true">
     <div class="floatbar-card">
       <div class="floatbar-inner">
-        <div class="topbar-left">
+        <div class="floatbar-left">
           <span class="nav-item">поиск</span>
           <a class="nav-item" href="https://t.me/furuyumemngrs" target="_blank" rel="noopener">поддержка</a>
-        </div>
-
-        <button class="floatbrand" id="floatLogoBtn" aria-label="FURUYUME — наверх">
-          <img src="logo.png" alt="FURUYUME">
-        </button>
-
-        <div class="topbar-right">
           <span class="nav-item">отзывы</span>
           <span class="nav-item">корзина</span>
+        </div>
+
+        <div class="floatbar-right">
+          <button class="floatbrand" id="floatLogoBtn" aria-label="FURUYUME — наверх">
+            <img src="logo.png" alt="FURUYUME">
+          </button>
         </div>
       </div>
     </div>
@@ -477,18 +509,25 @@
         <div class="topbar-left">
           <span class="nav-item">поиск</span>
           <a class="nav-item" href="https://t.me/furuyumemngrs" target="_blank" rel="noopener">поддержка</a>
-        </div>
-
-        <button class="brand" id="logoBtn" aria-label="FURUYUME — наверх">
-          <img src="logo.png" alt="FURUYUME">
-        </button>
-
-        <div class="topbar-right">
           <span class="nav-item">отзывы</span>
           <span class="nav-item">корзина</span>
         </div>
+
+        <div class="topbar-right">
+          <button class="brand" id="logoBtn" aria-label="FURUYUME — наверх">
+            <img src="logo.png" alt="FURUYUME">
+          </button>
+        </div>
       </div>
     </header>
+
+    <!-- ✅ (4) БЛОК С ФОТО ПОД ШАПКОЙ -->
+    <!-- Положи рядом файл: hero.png (или поменяй src на своё имя) -->
+    <section class="hero safe" aria-label="Фото">
+      <div class="hero-card">
+        <img src="hero.png" alt="FURUYUME">
+      </div>
+    </section>
 
     <!-- CATEGORIES (STATIC) -->
     <section class="categories safe" aria-label="Категории">
@@ -514,10 +553,14 @@
         <a href="https://www.instagram.com/" target="_blank" rel="noopener">instagram</a>
         <a href="https://example.com/" target="_blank" rel="noopener">site</a>
       </div>
+
       <div class="footer-legal">
         <a href="https://example.com/privacy" target="_blank" rel="noopener">политика конфиденциальности</a>
         <a href="https://example.com/offer" target="_blank" rel="noopener">договор оферты</a>
       </div>
+
+      <!-- ✅ (3) -->
+      <div class="footer-copy">FURUYUME © 2026</div>
     </footer>
   </div>
 
@@ -534,7 +577,7 @@
     ];
 
     // - sweater.png и dolyami.png лежат рядом с index.html
-    // ✅ Сделал названия чуть “длиннее”, чтобы визуально карточки были одинаковее.
+    // - hero.png лежит рядом с index.html (для блока фото)
     const PRODUCTS = [
       { id:"p1", img:"sweater.png", name:"REFLECTIVE SWEATER (BLACK) — ARCHIVE DROP", badge:"РАСПРОДАЖА", price:"7 600 RUB", oldPrice:"11 600 RUB", dolyami:"Долями по 1 900 ₽", categories:["olymp"] },
       { id:"p2", img:"sweater.png", name:"ARCHIVE TRACK JACKET — RARE PIECE",        badge:"LIMITED",     price:"12 900 RUB", oldPrice:"15 900 RUB", dolyami:"Долями по 3 225 ₽", categories:["olymp"] },
@@ -631,8 +674,8 @@
 
       setupFloatingHeader();
 
-      logoBtn.addEventListener("click", scrollToTop);
-      floatLogoBtn.addEventListener("click", scrollToTop);
+      if (logoBtn) logoBtn.addEventListener("click", scrollToTop);
+      if (floatLogoBtn) floatLogoBtn.addEventListener("click", scrollToTop);
 
       catWrap.addEventListener("click", async (e) => {
         const btn = e.target.closest("[data-cat]");
@@ -647,7 +690,16 @@
         await switchCategory(nextId);
       });
 
-      // Disable double-tap zoom feeling a bit
+      // ✅ (2) ещё один слой защиты от pinch-zoom / double-tap zoom
+      // iOS Safari: жест масштабирования и ctrl+wheel
+      document.addEventListener('gesturestart', (e) => e.preventDefault());
+      document.addEventListener('gesturechange', (e) => e.preventDefault());
+      document.addEventListener('gestureend', (e) => e.preventDefault());
+
+      document.addEventListener('wheel', (e) => {
+        if (e.ctrlKey) e.preventDefault();
+      }, { passive: false });
+
       let lastTouchEnd = 0;
       document.addEventListener('touchend', function (event) {
         const now = Date.now();
