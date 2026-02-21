@@ -24,6 +24,9 @@
       --radius: 18px;
       --ls: -0.05em;
       --ls-soft: -0.05em;
+
+      /* ✅ высота зоны с фикс-кнопками (чтобы низ не “плыл” и не было пустоты/обрезов) */
+      --actions-space: 108px;
     }
 
     *{ box-sizing:border-box; }
@@ -163,15 +166,22 @@
       letter-spacing: var(--ls);
     }
 
+    /* ✅ FIX: кликабельность меню (нормальные тап-зоны + меньше “мимо”) */
     .nav-item{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding: 8px 10px;
+      border-radius: 12px;
       opacity: .92;
-      transition: opacity .18s ease, transform .18s ease;
+      transition: opacity .18s ease, transform .18s ease, background .18s ease;
       -webkit-tap-highlight-color: transparent;
       cursor:pointer;
       user-select:none;
       flex:0 0 auto;
+      touch-action: manipulation;
     }
-    .nav-item:active{ opacity: .65; transform: scale(.98); }
+    .nav-item:active{ opacity: .70; transform: scale(.99); background: rgba(0,0,0,.04); }
 
     /* Logo */
     .brand{
@@ -221,11 +231,11 @@
       z-index: 2000;
       display:flex;
       justify-content:center;
-      pointer-events:none;
+      /* ✅ FIX: убрали pointer-events:none (это и давало клики “через раз” на мобилках) */
+      pointer-events:auto;
     }
 
     .floatbar-card{
-      pointer-events:auto;
       width: min(420px, calc(100% - 28px));
       border-radius: 999px;
       background: linear-gradient(180deg, var(--glass), var(--glass2));
@@ -240,6 +250,7 @@
       transition: opacity .22s ease, transform .22s ease;
       will-change: opacity, transform;
       contain: paint;
+      pointer-events:auto;
     }
     .floatbar.show .floatbar-card{
       opacity:1;
@@ -283,7 +294,12 @@
       cursor:pointer;
       user-select:none;
       flex:0 0 auto;
+      border-radius: 12px;
+      padding: 6px;
+      touch-action: manipulation;
+      transition: opacity .18s ease, transform .18s ease, background .18s ease;
     }
+    .floatbrand:active{ opacity:.7; transform: scale(.99); background: rgba(0,0,0,.04); }
     .floatbrand img{
       width:100%;
       height:100%;
@@ -357,6 +373,7 @@
       border-radius: 10px;
       transition: opacity .18s ease, transform .18s ease, background .18s ease;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
     .drawer-close:active{
       opacity:.6;
@@ -385,6 +402,7 @@
       cursor:pointer;
       -webkit-tap-highlight-color: transparent;
       transition: transform .18s ease, opacity .18s ease, background .18s ease;
+      touch-action: manipulation;
     }
     .result:active{
       transform: scale(.99);
@@ -515,6 +533,7 @@
       transition: opacity .18s ease, transform .18s ease, background .18s ease;
       -webkit-tap-highlight-color: transparent;
       cursor:pointer;
+      touch-action: manipulation;
     }
     .sheet-close:active{
       opacity:.55;
@@ -618,6 +637,7 @@
       -webkit-tap-highlight-color: transparent;
       transition: transform .18s ease, opacity .18s ease;
       user-select:none;
+      touch-action: manipulation;
     }
     .qty-btn:active{ transform: scale(.98); opacity:.75; }
     .qty-val{
@@ -658,6 +678,7 @@
       -webkit-tap-highlight-color: transparent;
       transition: transform .18s ease, opacity .18s ease;
       white-space:nowrap;
+      touch-action: manipulation;
     }
     .cart-order:active{ transform: scale(.99); opacity:.85; }
 
@@ -683,6 +704,7 @@
       border-radius: 10px;
       transition: opacity .18s ease, transform .18s ease, background .18s ease;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
     .cat:active{ transform: scale(.98); opacity:.7; }
     .cat.active{
@@ -729,6 +751,7 @@
       border-radius: 0;
       cursor:pointer;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     .product-photo{
@@ -756,6 +779,7 @@
       overflow: hidden;
       cursor:pointer;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     .desc{
@@ -849,6 +873,7 @@
     .footer a{
       transition: opacity .18s ease, transform .18s ease;
       -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
     .footer a:active{ opacity:.65; transform: scale(.99); }
 
@@ -867,18 +892,19 @@
       display:block;
     }
 
+    /* ✅ FIX: убрали “scss-вложенность”, сделали корректный flex-скролл */
     .product-scroll{
       position:absolute;
       inset:0;
       overflow:auto;
       -webkit-overflow-scrolling: touch;
-      padding-bottom: calc(95px + env(safe-area-inset-bottom)); /* место под фикс кнопки */
 
-      display: flex;
-      flex-direction: column;
+      /* место под фикс кнопки */
+      padding-bottom: calc(var(--actions-space) + env(safe-area-inset-bottom));
+
+      display:flex;
+      flex-direction:column;
       min-height: 100vh;
-
-      .pwrap{ flex: 0 0 auto; }
     }
 
     .productbar{
@@ -906,20 +932,24 @@
       gap: 10px;
     }
 
+    /* ✅ 2) Стрелка назад без подложки */
     .backbtn{
-      width:40px; height:40px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.92);
-      border: 1px solid rgba(0,0,0,.10);
+      width:44px; height:44px;
       display:grid;
       place-items:center;
       cursor:pointer;
       -webkit-tap-highlight-color: transparent;
-      transition: transform .18s ease, opacity .18s ease;
+      transition: transform .18s ease, opacity .18s ease, background .18s ease;
       flex:0 0 auto;
+
+      background: transparent;
+      border: 0;
+      border-radius: 14px;
+      touch-action: manipulation;
     }
-    .backbtn:active{ transform: scale(.99); opacity:.82; }
+    .backbtn:active{ transform: scale(.99); opacity:.75; background: rgba(0,0,0,.04); }
     .backbtn svg{ width:18px; height:18px; display:block; }
+    .backbtn svg path{ stroke: rgba(10,10,10,.75); }
 
     .productbar-title{
       min-width:0;
@@ -938,7 +968,7 @@
     }
 
     .productbar-spacer{
-      width:40px; height:40px; /* чтобы центр был реально центр */
+      width:44px; height:44px;
       flex:0 0 auto;
       opacity:0;
       pointer-events:none;
@@ -948,10 +978,13 @@
       width: min(520px, 100%);
       margin: 0 auto;
       padding-top: 6px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;                 /* важно */
-      min-height: 100%;        /* можно */
+
+      display:flex;
+      flex-direction:column;
+
+      /* ✅ чтобы футер “прилипал” к низу контента, но не создавал лишнюю пустоту */
+      flex: 1 0 auto;
+      min-height: 0;
     }
 
     .gallery{
@@ -960,8 +993,7 @@
       overflow:hidden;
       border: 1px solid rgba(0,0,0,.06);
       background: rgba(0,0,0,.02);
-
-      flex-shrink: 0;
+      flex: 0 0 auto;
     }
     .gallery-stage{
       width:100%;
@@ -996,6 +1028,7 @@
       -webkit-tap-highlight-color: transparent;
       transition: transform .18s ease, opacity .18s ease;
       user-select:none;
+      touch-action: manipulation;
     }
     .g-arrow:active{ transform: translateY(-50%) scale(.99); opacity:.82; }
     .g-left{ left: 10px; }
@@ -1019,6 +1052,7 @@
       opacity:.7;
       transition: opacity .18s ease, transform .18s ease;
       user-select:none;
+      touch-action: manipulation;
     }
     .thumb.active{
       opacity:1;
@@ -1092,6 +1126,7 @@
       -webkit-tap-highlight-color: transparent;
       transition: transform .18s ease, opacity .18s ease, background .18s ease;
       user-select:none;
+      touch-action: manipulation;
     }
     .sizebtn:active{ transform: scale(.99); opacity:.85; }
     .sizebtn.active{
@@ -1129,7 +1164,7 @@
     .related{
       margin-top: 22px;
       padding: 0 6px;
-      margin-bottom: 26px; /* ← добавь */
+      margin-bottom: 18px;
     }
     .related-head{
       display:flex;
@@ -1145,33 +1180,21 @@
       letter-spacing: var(--ls);
       opacity:.92;
     }
-    .rel-arrows{
-      display:flex;
-      gap: 8px;
-    }
-    .rel-btn{
-      width:36px; height:36px;
-      border-radius:999px;
-      background: rgba(255,255,255,.92);
-      border: 1px solid rgba(0,0,0,.10);
-      box-shadow: 0 12px 30px rgba(0,0,0,.08);
-      display:grid;
-      place-items:center;
-      cursor:pointer;
-      -webkit-tap-highlight-color: transparent;
-      transition: transform .18s ease, opacity .18s ease;
-    }
-    .rel-btn:active{ transform: scale(.99); opacity:.82; }
-    .rel-btn svg{ width:18px; height:18px; display:block; }
 
+    /* ✅ 3) Убрали стрелки, оставили кастомный ползунок */
     .rel-track{
       display:flex;
       gap: 12px;
       overflow:auto;
       -webkit-overflow-scrolling: touch;
       scroll-snap-type: x mandatory;
-      padding: 2px 2px 10px;
+      padding: 2px 2px 8px;
+
+      scrollbar-width: none;           /* Firefox hide */
+      -ms-overflow-style: none;        /* IE/Edge old */
     }
+    .rel-track::-webkit-scrollbar{ display:none; } /* WebKit hide */
+
     .rel-card{
       flex: 0 0 140px;
       scroll-snap-align: start;
@@ -1182,6 +1205,7 @@
       cursor:pointer;
       -webkit-tap-highlight-color: transparent;
       transition: transform .18s ease, opacity .18s ease;
+      touch-action: manipulation;
     }
     .rel-card:active{ transform: scale(.99); opacity:.85; }
     .rel-img{
@@ -1224,6 +1248,31 @@
       opacity:.78;
     }
 
+    .rel-scrollbar{
+      margin-top: 10px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.08);
+      border: 1px solid rgba(0,0,0,.06);
+      position: relative;
+      overflow:hidden;
+      user-select:none;
+      touch-action: none; /* для перетаскивания ползунка */
+    }
+    .rel-thumb{
+      position:absolute;
+      top:0; left:0;
+      height:100%;
+      border-radius: 999px;
+      background: rgba(0,0,0,.55);
+      box-shadow: 0 10px 22px rgba(0,0,0,.10);
+      width: 40px; /* будет пересчитано JS */
+      transform: translateX(0);
+      transition: opacity .18s ease;
+      opacity:.9;
+    }
+    .rel-scrollbar.dragging .rel-thumb{ opacity: 1; }
+
     .product-actions{
       position:fixed;
       left:0; right:0;
@@ -1257,6 +1306,7 @@
       transition: transform .18s ease, opacity .18s ease;
       user-select:none;
       white-space:nowrap;
+      touch-action: manipulation;
     }
     .act-btn:active{ transform: scale(.99); opacity:.85; }
     .btn-primary{
@@ -1273,6 +1323,13 @@
     body.product-open .floatbar{ display:none; }
     body.product-open .app{ display:none; }
 
+    /* ✅ product footer: нормальная “концовка” без огромной пустоты */
+    .product-view .footer{
+      margin-top: auto;
+      padding-top: 18px;
+      padding-bottom: 18px; /* вместо 34, чтобы низ не выглядел пустым */
+    }
+
     /* Small devices polish */
     @media (max-width: 360px){
       .topbar-card{ padding: 9px 12px; }
@@ -1282,17 +1339,13 @@
       .floatbar-right{ gap: 10px; font-size: 10.5px; }
 
       .productbar-card{ padding: 9px 10px; }
-      .backbtn{ width:38px; height:38px; }
-      .productbar-spacer{ width:38px; height:38px; }
+      .backbtn{ width:40px; height:40px; }
+      .productbar-spacer{ width:40px; height:40px; }
       .g-arrow{ width:38px; height:38px; }
 
       .cat{ font-size: 10px; }
       .grid{ gap: 26px 14px; }
       .name{ font-size: 13px; min-height: calc(2 * 1.1em); }
-    }
-      .product-view .footer{
-        margin-top: auto;
-        padding-top: 18px;
     }
   </style>
 </head>
@@ -1368,7 +1421,7 @@
         <div class="productbar-card">
           <button id="productBack" class="backbtn" type="button" aria-label="Назад">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M14.5 6.5L9 12l5.5 5.5" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M14.5 6.5L9 12l5.5 5.5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </button>
 
@@ -1420,22 +1473,15 @@
         <section class="related" aria-label="Смотрите также">
           <div class="related-head">
             <div class="related-title">Смотрите также</div>
-            <div class="rel-arrows">
-              <button id="relPrev" class="rel-btn" type="button" aria-label="Назад">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M14.5 6.5L9 12l5.5 5.5" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-              <button id="relNext" class="rel-btn" type="button" aria-label="Вперёд">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="M9.5 6.5L15 12l-5.5 5.5" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </button>
-            </div>
           </div>
 
           <div id="relTrack" class="rel-track">
             <!-- injected -->
+          </div>
+
+          <!-- ✅ кастомный ползунок -->
+          <div id="relScrollbar" class="rel-scrollbar" aria-hidden="true">
+            <div id="relThumb" class="rel-thumb"></div>
           </div>
         </section>
 
@@ -1443,7 +1489,6 @@
         <footer class="footer bottom-safe" aria-label="Нижнее меню">
           <div class="footer-links">
             <a href="https://t.me/furuyume" target="_blank" rel="noopener">telegram</a>
-
             <a href="https://www.instagram.com/furuyume.store/" target="_blank" rel="noopener">instagram</a>
             <a href="https://furuyume.online" target="_blank" rel="noopener">site</a>
           </div>
@@ -1548,7 +1593,6 @@
 
     // =========================
     // ✅ PRODUCTS (каждому товару 4 фото)
-    // Как назвать фотки — смотри внизу ответа (я расписал).
     // =========================
     const PRODUCTS = [
       {
@@ -1744,8 +1788,8 @@
     const pDescList = document.getElementById("pDescList");
 
     const relTrack = document.getElementById("relTrack");
-    const relPrev = document.getElementById("relPrev");
-    const relNext = document.getElementById("relNext");
+    const relScrollbar = document.getElementById("relScrollbar");
+    const relThumb = document.getElementById("relThumb");
 
     const buyNowBtn = document.getElementById("buyNowBtn");
     const addToCartBtn = document.getElementById("addToCartBtn");
@@ -2003,8 +2047,6 @@
     }
 
     function buildOrderText(lines, totalRub){
-      // строго как ты просил
-      // "Здравствуйте! Хочу оформить заказ:\n\n Название модели, размер и цена.\n\nИтого: ..."
       const header = "Здравствуйте! Хочу оформить заказ:";
       const body = lines.join("\n");
       const total = `Итого: ${fmtRub(totalRub)}`;
@@ -2047,7 +2089,6 @@
       galleryImg.src = p.gallery[currentImgIndex];
       galleryImg.alt = p.name;
 
-      // thumbs
       const t = thumbs.querySelectorAll(".thumb");
       t.forEach((el, i) => el.classList.toggle("active", i === currentImgIndex));
     }
@@ -2072,8 +2113,7 @@
 
     function renderRelated(p){
       const others = PRODUCTS.filter(x => x.id !== p.id);
-      // pseudo-random but stable-ish: shuffle by Math.random
-      const pick = others.sort(() => Math.random() - 0.5).slice(0, 4);
+      const pick = others.sort(() => Math.random() - 0.5).slice(0, 6);
 
       relTrack.innerHTML = pick.map(x => `
         <div class="rel-card" role="button" tabindex="0" data-open-product="${x.id}" aria-label="Открыть ${x.name}">
@@ -2082,6 +2122,11 @@
           <div class="rel-price">${fmtRub(x.priceRub)}</div>
         </div>
       `).join("");
+
+      // после рендера — обновить ползунок
+      requestAnimationFrame(updateRelatedScrollbar);
+      requestAnimationFrame(() => relTrack.scrollTo({ left: 0, top: 0, behavior: "instant" }));
+      requestAnimationFrame(updateRelatedScrollbar);
     }
 
     function updateSkuLine(){
@@ -2095,12 +2140,11 @@
       const p = byId(pid);
       if (!p) return;
 
-      closeSearch(); // если поиск открыт — закрываем
+      closeSearch();
       currentProductId = pid;
       currentSize = "M";
       currentImgIndex = 0;
 
-      // UI
       document.body.classList.add("product-open");
       productView.classList.add("show");
       productView.setAttribute("aria-hidden", "false");
@@ -2140,10 +2184,109 @@
       const p = byId(currentProductId);
       if (!p) return;
       addToCart(p.id, currentSize);
-      // микро-отклик: чуть “мигаем” кнопкой
       addToCartBtn.style.opacity = "0.75";
       setTimeout(() => addToCartBtn.style.opacity = "", 160);
     }
+
+    // =========================
+    // ✅ Related custom scrollbar (drag + sync)
+    // =========================
+    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+
+    function updateRelatedScrollbar(){
+      if (!relScrollbar || !relThumb || !relTrack) return;
+
+      const sw = relTrack.scrollWidth;
+      const cw = relTrack.clientWidth;
+      const maxScroll = Math.max(0, sw - cw);
+
+      const barW = relScrollbar.clientWidth;
+      if (barW <= 0 || sw <= 0 || cw <= 0 || maxScroll === 0){
+        // если нечего скроллить — делаем “почти полный” и по центру
+        relThumb.style.width = "100%";
+        relThumb.style.transform = "translateX(0px)";
+        return;
+      }
+
+      const ratio = cw / sw;
+      const thumbW = clamp(Math.round(barW * ratio), 34, barW);
+      const maxX = Math.max(0, barW - thumbW);
+
+      const x = (relTrack.scrollLeft / maxScroll) * maxX;
+
+      relThumb.style.width = `${thumbW}px`;
+      relThumb.style.transform = `translateX(${x}px)`;
+    }
+
+    (function setupRelatedScrollbarDrag(){
+      if (!relScrollbar || !relThumb || !relTrack) return;
+
+      let dragging = false;
+      let startX = 0;
+      let startLeft = 0;
+
+      function getThumbMetrics(){
+        const barW = relScrollbar.clientWidth;
+        const thumbW = relThumb.getBoundingClientRect().width;
+        const maxX = Math.max(0, barW - thumbW);
+        return { barW, thumbW, maxX };
+      }
+
+      function thumbLeftPx(){
+        const m = relThumb.style.transform.match(/translateX\(([-\d.]+)px\)/);
+        return m ? Number(m[1]) : 0;
+      }
+
+      function setByThumbX(x){
+        const sw = relTrack.scrollWidth;
+        const cw = relTrack.clientWidth;
+        const maxScroll = Math.max(0, sw - cw);
+
+        const { maxX } = getThumbMetrics();
+        if (maxX <= 0 || maxScroll <= 0) return;
+
+        const t = clamp(x, 0, maxX);
+        const scrollLeft = (t / maxX) * maxScroll;
+        relTrack.scrollLeft = scrollLeft;
+      }
+
+      relScrollbar.addEventListener("pointerdown", (e) => {
+        dragging = true;
+        relScrollbar.classList.add("dragging");
+        relScrollbar.setPointerCapture(e.pointerId);
+
+        startX = e.clientX;
+        startLeft = thumbLeftPx();
+
+        // если тыкнули не в сам thumb — прыгнуть туда
+        const thumbRect = relThumb.getBoundingClientRect();
+        if (!(e.clientX >= thumbRect.left && e.clientX <= thumbRect.right)){
+          const barRect = relScrollbar.getBoundingClientRect();
+          const { thumbW } = getThumbMetrics();
+          const target = (e.clientX - barRect.left) - (thumbW / 2);
+          setByThumbX(target);
+          updateRelatedScrollbar();
+          startLeft = thumbLeftPx();
+          startX = e.clientX;
+        }
+      });
+
+      relScrollbar.addEventListener("pointermove", (e) => {
+        if (!dragging) return;
+        const dx = e.clientX - startX;
+        setByThumbX(startLeft + dx);
+        updateRelatedScrollbar();
+      });
+
+      function endDrag(){
+        if (!dragging) return;
+        dragging = false;
+        relScrollbar.classList.remove("dragging");
+      }
+
+      relScrollbar.addEventListener("pointerup", endDrag);
+      relScrollbar.addEventListener("pointercancel", endDrag);
+    })();
 
     // =========================
     // INIT
@@ -2198,8 +2341,8 @@
       }, { passive: true });
 
       window.addEventListener("resize", () => {
-        if (!searchDrawer.classList.contains("open")) return;
-        setDrawerTop();
+        if (searchDrawer.classList.contains("open")) setDrawerTop();
+        updateRelatedScrollbar();
       });
 
       // open product from grid / name / img / search results / related
@@ -2233,14 +2376,12 @@
         const s = b.getAttribute("data-size");
         if (!SIZES.includes(s)) return;
         currentSize = s;
-        // ui
         pSizes.querySelectorAll(".sizebtn").forEach(x => x.classList.toggle("active", x.getAttribute("data-size") === s));
         updateSkuLine();
       });
 
-      // related arrows
-      relPrev.addEventListener("click", () => relTrack.scrollBy({ left: -220, top: 0, behavior: "smooth" }));
-      relNext.addEventListener("click", () => relTrack.scrollBy({ left:  220, top: 0, behavior: "smooth" }));
+      // related sync
+      relTrack.addEventListener("scroll", () => updateRelatedScrollbar(), { passive: true });
 
       // product actions
       buyNowBtn.addEventListener("click", orderNowCurrent);
