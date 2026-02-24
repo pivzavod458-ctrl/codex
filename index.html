@@ -365,21 +365,17 @@
     .pwrap { transition: opacity 0.25s ease; width: min(520px, 100%); margin: 0 auto; padding-top: 6px; display:flex; flex-direction:column; flex: 1 0 auto; min-height: 0; }
     .pwrap.fade-out { opacity: 0; }
 
-    .productbar{ position: relative; z-index: 3100; padding-top: 2px; padding-bottom: 12px; background: transparent; pointer-events: none; }
-    .productbar-card{
-      pointer-events: auto; width: min(520px, calc(100% - 32px)); margin: 0 auto; border-radius: 999px;
-      background: linear-gradient(180deg, var(--glass), var(--glass2)); background-color: rgba(255,255,255,.72);
-      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); box-shadow: var(--shadow);
-      border: 1px solid rgba(0,0,0,.06); padding: 10px 12px; display:flex; align-items:center; justify-content:space-between; gap: 10px;
+    /* ✅ ФИКС 2: Простая кнопка НАЗАД без подложки */
+    .productbar { position: relative; z-index: 3100; padding: 12px 14px 6px; pointer-events: none; display: flex; align-items: center; }
+    .backbtn {
+      pointer-events: auto; width: 44px; height: 44px; display: grid; place-items: center;
+      cursor: pointer; -webkit-tap-highlight-color: transparent; transition: transform .18s ease, opacity .18s ease;
+      background: transparent; border: 0; touch-action: manipulation; margin-left: -8px;
     }
-    .backbtn{ width:44px; height:44px; display:grid; place-items:center; cursor:pointer; -webkit-tap-highlight-color: transparent; transition: transform .18s ease, opacity .18s ease, background .18s ease; flex:0 0 auto; background: transparent; border: 0; border-radius: 14px; touch-action: manipulation; }
-    .backbtn:active{ transform: scale(.99); opacity:.75; background: rgba(0,0,0,.04); }
-    .backbtn svg{ width:18px; height:18px; display:block; }
-    .backbtn svg path{ stroke: rgba(10,10,10,.75); }
-    .productbar-title{ min-width:0; flex:1 1 auto; text-align:center; font-size:12px; font-weight:600; text-transform: uppercase; letter-spacing: var(--ls); opacity:.92; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; user-select:none; pointer-events:none; }
-    .productbar-spacer{ width:44px; height:44px; flex:0 0 auto; opacity:0; pointer-events:none; }
+    .backbtn:active { transform: scale(.92); opacity: .6; }
+    .backbtn svg { width: 22px; height: 22px; display: block; }
 
-    /* ✅ НОВАЯ ГАЛЕРЕЯ (Скролл + точки + 1080x1350) */
+    /* ✅ НОВАЯ ГАЛЕРЕЯ (Скролл + точки поверх + 1080x1350) */
     .gallery{ position:relative; border-radius: 22px; overflow:hidden; border: 1px solid rgba(0,0,0,.06); background: rgba(0,0,0,.02); flex: 0 0 auto; }
     .gallery-stage{
       width: 100%; 
@@ -403,11 +399,14 @@
       display:block; user-select:none; pointer-events:auto;
     }
 
-    /* Точки под галереей */
-    .gallery-dots { display: flex; justify-content: center; gap: 6px; padding: 12px 10px; }
+    /* ✅ ФИКС 3: Точки-индикаторы теперь ПОВЕРХ фото, в самом низу */
+    .gallery-dots {
+      position: absolute; bottom: 12px; left: 0; right: 0;
+      display: flex; justify-content: center; gap: 6px; pointer-events: none; z-index: 10;
+    }
     .dot {
       width: 6px; height: 6px; border-radius: 50%;
-      background: rgba(0,0,0,.15);
+      background: rgba(0,0,0,.2);
       transition: background .25s ease, transform .25s ease;
     }
     .dot.active { background: rgba(0,0,0,.8); transform: scale(1.2); }
@@ -440,10 +439,13 @@
     .related{ margin-top: 22px; padding: 0 6px; margin-bottom: 18px; }
     .related-head{ display:flex; align-items:center; justify-content:space-between; gap: 10px; margin-bottom: 10px; }
     .related-title{ font-size:12px; font-weight:900; text-transform: uppercase; letter-spacing: var(--ls); opacity:.92; }
-    .rel-track{ display:flex; gap: 12px; overflow:auto; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; padding: 2px 2px 8px; scrollbar-width: none; -ms-overflow-style: none; }
+    
+    /* ✅ ФИКС 1: Свободный инерционный скролл без грубого примагничивания */
+    .rel-track{ display:flex; gap: 12px; overflow:auto; -webkit-overflow-scrolling: touch; padding: 2px 2px 8px; scrollbar-width: none; -ms-overflow-style: none; }
     .rel-track::-webkit-scrollbar{ display:none; }
-    .rel-card{ flex: 0 0 140px; scroll-snap-align: start; border-radius: 18px; border: 1px solid rgba(0,0,0,.06); background: rgba(0,0,0,.02); padding: 12px 10px; cursor:pointer; -webkit-tap-highlight-color: transparent; transition: transform .18s ease, opacity .18s ease; touch-action: manipulation; }
+    .rel-card{ flex: 0 0 140px; border-radius: 18px; border: 1px solid rgba(0,0,0,.06); background: rgba(0,0,0,.02); padding: 12px 10px; cursor:pointer; -webkit-tap-highlight-color: transparent; transition: transform .18s ease, opacity .18s ease; touch-action: manipulation; }
     .rel-card:active{ transform: scale(.99); opacity:.85; }
+    
     .rel-img{ width:100%; aspect-ratio: 1/1; display:flex; align-items:center; justify-content:center; overflow:hidden; background: transparent; margin-bottom: 10px; }
     .rel-img img{ width:100%; height:100%; object-fit: contain; display:block; pointer-events:none; user-select:none; }
     .rel-name{ font-size:10px; font-weight:900; text-transform: uppercase; letter-spacing: var(--ls); line-height: 1.15; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow:hidden; opacity:.92; min-height: calc(2 * 1.15em); }
@@ -469,7 +471,7 @@
     body.product-open .app{ display:none; }
     .product-view .footer{ margin-top: auto; padding-top: 18px; padding-bottom: 18px; }
 
-    /* ✅ НОВЫЙ ПРОСТОЙ И УНИВЕРСАЛЬНЫЙ ПРОСМОТРЩИК ФОТО */
+    /* ПРОСТОЙ И УНИВЕРСАЛЬНЫЙ ПРОСМОТРЩИК ФОТО */
     .image-viewer {
       position: fixed; inset: 0; z-index: 5000;
       display: none; align-items: center; justify-content: center;
@@ -495,9 +497,6 @@
       .topbar-right{ gap: 5px; font-size: 10.5px; }
       .floatbrand{ width:36px; height:36px; }
       .floatbar-right{ gap: 5px; font-size: 10.5px; }
-      .productbar-card{ padding: 9px 10px; }
-      .backbtn{ width:40px; height:40px; }
-      .productbar-spacer{ width:40px; height:40px; }
       .cat{ font-size: 10px; }
       .grid{ gap: 26px 14px; }
       .name{ font-size: 13px; min-height: calc(2 * 1.1em); }
@@ -569,15 +568,11 @@
     <div id="productScroll" class="product-scroll safe">
       
       <header class="productbar" aria-label="Навигация товара">
-        <div class="productbar-card">
-          <button id="productBack" class="backbtn" type="button" aria-label="Назад">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M14.5 6.5L9 12l5.5 5.5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-          <div id="productBarTitle" class="productbar-title">FURUYUME</div>
-          <div class="productbar-spacer" aria-hidden="true"></div>
-        </div>
+        <button id="productBack" class="backbtn" type="button" aria-label="Назад">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M15 6L9 12l6 6" stroke="#8b8b8b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
       </header>
 
       <div class="pwrap" id="pwrap">
@@ -952,7 +947,6 @@
     const pwrap = document.getElementById("pwrap");
     const productScroll = document.getElementById("productScroll");
     const productBack = document.getElementById("productBack");
-    const productBarTitle = document.getElementById("productBarTitle");
 
     const galleryStage = document.getElementById("galleryStage");
     const galleryDots = document.getElementById("galleryDots");
@@ -1260,7 +1254,6 @@
         productView.classList.add("show"); 
         productView.setAttribute("aria-hidden", "false");
         productScroll.scrollTo({ top: 0, behavior: "instant" });
-        productBarTitle.textContent = "НАЗАД К КАТАЛОГУ";
       }
     }
 
